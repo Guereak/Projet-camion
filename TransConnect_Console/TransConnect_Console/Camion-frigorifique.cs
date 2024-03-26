@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace TransConnect_Console
 {
-    class Program
+    internal class Camion_frigorifique
     {
-        static void Main(string[] args)
-        {
-
-        }
     }
 }

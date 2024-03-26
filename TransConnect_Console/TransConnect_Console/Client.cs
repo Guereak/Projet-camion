@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace TransConnect_Console
 {
-    class Program
+    class Client : Personne
     {
-        static void Main(string[] args)
-        {
-
-        }
     }
 }
