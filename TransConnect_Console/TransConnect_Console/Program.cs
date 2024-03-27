@@ -14,10 +14,19 @@ namespace TransConnect_Console
             Salarie.PrintFullCompanyTree();
             Console.ReadLine();
 
-            Vehicule.TestPopulateFlotte();
-            Vehicule.AfficheVehicles();
-
+            Administrateur a = new Administrateur();
+            a.FireSalarie(Salarie.Gautier);
+            Salarie.PrintFullCompanyTree();
             Console.ReadLine();
+
+            //Vehicule.TestPopulateFlotte();
+            //Vehicule.AfficheVehicules();
+            //Console.ReadLine();
+
+            //Client.TestPopulateClients();
+            //Client.clients.Sort();
+            //Client.clients.ForEach(x => Console.WriteLine(x.Lastname));
+            //Console.ReadLine();
 
         }
     }

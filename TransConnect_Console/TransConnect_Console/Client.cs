@@ -6,14 +6,33 @@ using System.Threading.Tasks;
 
 namespace TransConnect_Console
 {
-    class Client : Personne
+    class Client : Personne, IComparable<Client>
     {
         private List<Commande> pastOrders;
+        public static List<Client> clients = new List<Client>();
 
         public void CreateOrder(string deliveryStart, string deliveryDestination, Vehicule vehicle)
         {
             Commande order = new Commande(this, deliveryStart, deliveryDestination, vehicle);
             pastOrders.Add(order);
+        }
+
+        public int CompareTo(Client other)
+        {
+            return Lastname.CompareTo(other.Lastname);
+        }
+
+        public static void TestPopulateClients()
+        {
+            Client client1 = new Client { Lastname = "Ben" };
+            Client client2 = new Client { Lastname = "Archibald" };
+            Client client3 = new Client { Lastname = "Smith" };
+            Client client4 = new Client { Lastname = "Zyr" };
+            Client client5 = new Client { Lastname = "Doe" };
+            Client client6 = new Client { Lastname = "Charlie" };
+            Client client7 = new Client { Lastname = "Dana" };
+
+            clients.AddRange(new[] { client1, client2, client3, client4, client5, client6, client7 });
         }
     }
 }
