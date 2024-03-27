@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace TransConnect_Console
 {
-    internal class Camion_citerne
+    class Camion_citerne : PoidsLourd
     {
+        public override string ToString()
+        {
+            return "Camion citerne : " + base.ToString();
+        }
     }
 }

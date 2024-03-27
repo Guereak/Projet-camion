@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace TransConnect_Console
 {
-    class Camion_benne : PoidsLourd 
+    class Chauffeur : Salarie
     {
-        public override string ToString()
-        {
-            return "Camion benne : " + base.ToString();
-        }
+        private double hourlyRate;
+        List<DateTime> bookedOn;
     }
 }

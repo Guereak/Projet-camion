@@ -10,6 +10,14 @@ namespace TransConnect_Console
     {
         static void Main(string[] args)
         {
+            Salarie.TestPopulateEmployees();
+            Salarie.PrintFullCompanyTree();
+            Console.ReadLine();
+
+            Vehicule.TestPopulateFlotte();
+            Vehicule.AfficheVehicles();
+
+            Console.ReadLine();
 
         }
     }
