@@ -10,14 +10,12 @@ namespace TransConnect_Console
     {
         static void Main(string[] args)
         {
-            Salarie.TestPopulateEmployees();
-            Salarie.PrintFullCompanyTree();
-            Console.ReadLine();
+            Personne.PromptCreate();
 
-            Administrateur a = new Administrateur();
-            a.FireSalarie(Salarie.Gautier);
-            Salarie.PrintFullCompanyTree();
-            Console.ReadLine();
+            //Salarie.TestPopulateEmployees();
+            //Salarie.PrintFullCompanyTree();
+            //Console.ReadLine();
+
 
             //Vehicule.TestPopulateFlotte();
             //Vehicule.AfficheVehicules();

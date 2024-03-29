@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -99,5 +100,12 @@ namespace TransConnect_Console
         }
 
         #endregion
+
+        public static Salarie PromptCreate()
+        {
+            Personne.PersonneStruct p = Personne.PromptCreate();
+
+            throw new NotImplementedException();
+        }
     }
 }
