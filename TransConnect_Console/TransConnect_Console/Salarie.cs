@@ -11,12 +11,15 @@ namespace TransConnect_Console
 {
     class Salarie : Personne
     {
+        private static int uidCounter = 0;
+
         // non-editable
         private DateTime dateJoined;
 
         // editable
         private string role;
         private int salary;
+        private int uid;
 
         // non-explicitely mentionned properties
         public Salarie manager;
@@ -101,10 +104,49 @@ namespace TransConnect_Console
 
         #endregion
 
-        public static Salarie PromptCreate()
+        public Salarie(PersonneStruct personneStruct, string role, int salary, Salarie manager) : base(personneStruct)
+        {
+            this.role = role;
+            this.salary = salary;
+            uidCounter++;
+        }
+
+        // Blank constructor. Only for test purposes
+        public Salarie()
+        {
+
+        }
+
+        /// <summary>
+        /// Create a Salarie using the console.
+        /// Prompts for attributes and returns a 'Salarie' object
+        /// </summary>
+        public new static Salarie PromptCreate()
         {
             Personne.PersonneStruct p = Personne.PromptCreate();
 
+            Console.WriteLine("Rôle du salarié: ");
+            string role = Console.ReadLine();
+
+            bool success = false;
+            int salaire;
+            do
+            {
+                Console.WriteLine("(long) Salaire: ");
+                string num = Console.ReadLine().Trim().Normalize();
+                success = Int32.TryParse(num, out salaire);
+
+            } while (!success);
+
+            //TODO Implement manager
+            
+
+            return new Salarie(p, role, salaire, new Salarie());
+        }
+
+        public static Salarie GetSalarieByUid()
+        {
+            // On parcourt l'arbre à partir du CEO
             throw new NotImplementedException();
         }
     }
