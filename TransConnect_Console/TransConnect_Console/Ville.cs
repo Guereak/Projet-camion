@@ -13,8 +13,6 @@ namespace TransConnect_Console
         int id;
         string name;
         List<Edge> neighbours = new List<Edge>();
-        int timeInMinutes;
-        int distance;
 
         private static int idCounter = 0;
         public static Dictionary<string, int> VilleToId = new Dictionary<string, int>();

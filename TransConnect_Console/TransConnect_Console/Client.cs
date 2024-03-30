@@ -11,9 +11,9 @@ namespace TransConnect_Console
         private List<Commande> pastOrders;
         public static List<Client> clients = new List<Client>();
 
-        public void CreateOrder(string deliveryStart, string deliveryDestination, Vehicule vehicle)
+        public void CreateOrder(Ville deliveryStart, Ville deliveryDestination, Vehicule vehicle, Chauffeur chauffeur)
         {
-            Commande order = new Commande(this, deliveryStart, deliveryDestination, vehicle);
+            Commande order = new Commande(this, deliveryStart, deliveryDestination, vehicle, chauffeur);
             pastOrders.Add(order);
         }
 
