@@ -16,6 +16,12 @@ namespace TransConnect_Console
         private Chauffeur chauffeur;
         private Vehicule vehicle;
 
+        public double TotalPrice
+        {
+            get { return totalPrice; }
+            set { totalPrice = value; } // For test purposes only
+        }
+
         public Commande(Client client, Ville deliveryStartingPoint, Ville deliveryDestinationPoint, Vehicule vehicle, Chauffeur chauffeur)
         {
             this.client = client;
@@ -27,9 +33,17 @@ namespace TransConnect_Console
             totalPrice = ComputeOrderPrice();
         }
 
+        // FOR TEST PURPOSES ONLY
+        public Commande() { }
+
         public double ComputeOrderPrice()
         {
             throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            return "Total Price : " + TotalPrice.ToString();
         }
     }
 }

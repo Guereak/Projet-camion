@@ -207,5 +207,10 @@ namespace TransConnect_Console
 
             return p;
         }
+
+        public override string ToString()
+        {
+            return Lastname.ToUpper() + " " + Firstname + " " + Address.City;
+        }
     }
 }

@@ -10,9 +10,13 @@ namespace TransConnect_Console
     {
         static void Main(string[] args)
         {
-            Ville.CreateVillesFromCsv("../../Ressources/Distances.csv");
-            Ville.DisplayVilles();
+            Client.TestPopulateClients();
+            Client.TestClientsComparaisons();
             Console.ReadLine();
+
+            //Ville.CreateVillesFromCsv("../../Ressources/Distances.csv");
+            //Ville.DisplayVilles();
+            //Console.ReadLine();
 
             //Personne.PromptCreate();
 

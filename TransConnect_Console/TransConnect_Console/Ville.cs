@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security.Policy;
 
 namespace TransConnect_Console
 {
@@ -121,6 +122,39 @@ namespace TransConnect_Console
             vs[vs.Length - 1] = v;
 
             villes = vs;
+        }
+
+        public static void Dijkstra(Ville vtarget)
+        {
+            int[] dist = new int[villes.Length];
+            Ville[] prev = new Ville[villes.Length];
+            List<Ville> q = new List<Ville>();
+
+            for(int i = 0; i < villes.Length; i++)
+            {
+                dist[i] = Int32.MaxValue;
+                q.Add(villes[i]);
+            }
+
+            dist[VilleToId[vtarget.name]] = 0;
+
+            while(q.Count > 0)
+            {
+
+
+            }
+
+        }
+
+        private static void GetMinIndex(List<Ville> v)
+        {
+            int distance = Int32.MaxValue;
+            int index = -1;
+
+            for (int i = 0; i < v.Count; i++)
+            {
+                // TODO 
+            }
         }
     }
 }
