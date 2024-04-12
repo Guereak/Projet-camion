@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TransConnect_Console
 {
-    class Client : Personne
+    class Client : Personne, IComparable<Client>
     {
         private List<Commande> pastOrders = new List<Commande>();
         public static List<Client> clients = new List<Client>();
@@ -19,9 +19,9 @@ namespace TransConnect_Console
             pastOrders.Add(order);
         }
 
-        public int Compare(Client current, Client other)
+        public int CompareTo(Client other)
         {
-            return current.Lastname.CompareTo(other.Lastname);
+            return CompareByName(this, other);
         }
 
         public static Comparison<Client> CompareByName = delegate (Client c1, Client c2)
@@ -74,7 +74,7 @@ namespace TransConnect_Console
             clients.Sort(CompareByCity);
             clients.ForEach(x => Console.WriteLine(x));
             Console.ReadLine();
-            clients.Sort(CompareByName);
+            clients.Sort();
             clients.ForEach(x => Console.WriteLine(x));
             Console.ReadLine();
             clients.Sort(CompareByCumulativeExpenses);

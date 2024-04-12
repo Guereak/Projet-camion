@@ -1,11 +1,8 @@
-﻿using Microsoft.SqlServer.Server;
-using System;
+﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Security.Policy;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace TransConnect_Console
 {
@@ -89,6 +86,11 @@ namespace TransConnect_Console
             }
         }
 
+        public override string ToString()
+        {
+            return $"id: {id}, name:{name}";
+        }
+
         public static void DisplayVilles()
         {
             foreach(Ville v in villes)
@@ -124,37 +126,65 @@ namespace TransConnect_Console
             villes = vs;
         }
 
-        public static void Dijkstra(Ville vtarget)
+        public static void Dijkstra(Ville source, Ville target)
         {
-            int[] dist = new int[villes.Length];
-            Ville[] prev = new Ville[villes.Length];
+            Dictionary<Ville, int> dist = new Dictionary<Ville,int>();
+            Dictionary<Ville, Ville> prev = new Dictionary<Ville, Ville>();
             List<Ville> q = new List<Ville>();
 
             for(int i = 0; i < villes.Length; i++)
             {
-                dist[i] = Int32.MaxValue;
+                dist[villes[i]] = Int32.MaxValue;
                 q.Add(villes[i]);
             }
 
-            dist[VilleToId[vtarget.name]] = 0;
+            dist[source] = 0;
 
             while(q.Count > 0)
             {
+                Ville v = RemoveMinVille(q, dist);
+                
+                if(v == target)
+                {
+                    // Da ting is found, stop
+                    foreach(KeyValuePair<Ville, int> kvp in dist)
+                    {
+                        Console.WriteLine("FOUNDDD");
+                        Console.WriteLine(kvp.Key.ToString() + " DIST " + kvp.Value.ToString());
+                    }
+                }
+                
+                q.Remove(v);
 
-
+                foreach(Edge neighbour in v.neighbours)
+                {
+                    int alt = dist[v] + neighbour.distance;
+                    if(alt < dist[neighbour.destination])
+                    {
+                        dist[neighbour.destination] = alt;
+                        prev[neighbour.destination] = v;
+                    }
+                }
             }
 
         }
 
-        private static void GetMinIndex(List<Ville> v)
+        private static Ville RemoveMinVille(List<Ville> q, Dictionary<Ville, int> dist)
         {
             int distance = Int32.MaxValue;
-            int index = -1;
+            Ville v = null;
 
-            for (int i = 0; i < v.Count; i++)
+            foreach(Ville kvp in q)
             {
-                // TODO 
+                if(dist[kvp] < distance)
+                {
+                    distance = dist[kvp];
+                    v = kvp;
+                }
             }
+
+            return v;
         }
+
     }
 }

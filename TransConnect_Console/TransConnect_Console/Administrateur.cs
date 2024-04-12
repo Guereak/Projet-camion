@@ -19,10 +19,10 @@ namespace TransConnect_Console
             s.manager = manager;
         }
 
-        public void FireSalarie(Salarie s)
-        {
-            s.manager.managees.AddRange(s.managees);
-            s.manager.managees.Remove(s);
-        }
+        //public void FireSalarie(Salarie s)
+        //{
+        //    s.manager.managees.AddRange(s.managees);
+        //    s.manager.managees.Remove(s);
+        //}
     }
 }

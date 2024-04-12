@@ -51,6 +51,9 @@
     <Compile Include="Chauffeur.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Commande.cs" />
+    <Compile Include="ISaveable.cs" />
+    <Compile Include="ListeChainee.cs" />
+    <Compile Include="Node.cs" />
     <Compile Include="Personne.cs" />
     <Compile Include="PoidsLourd.cs" />
     <Compile Include="Program.cs" />

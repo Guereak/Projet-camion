@@ -10,13 +10,16 @@ namespace TransConnect_Console
     {
         static void Main(string[] args)
         {
-            Client.TestPopulateClients();
-            Client.TestClientsComparaisons();
+            //Client.TestPopulateClients();
+            //Client.TestClientsComparaisons();
+            //Console.ReadLine();
+
+            Ville.CreateVillesFromCsv("../../Ressources/Distances.csv");
+            Ville.DisplayVilles();
             Console.ReadLine();
 
-            //Ville.CreateVillesFromCsv("../../Ressources/Distances.csv");
-            //Ville.DisplayVilles();
-            //Console.ReadLine();
+            Ville.Dijkstra(Ville.villes[0], Ville.villes[5]);
+            Console.ReadLine();
 
             //Personne.PromptCreate();
 
