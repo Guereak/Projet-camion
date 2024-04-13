@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace TransConnect_Console
 {
-    class Ville
+    public class Ville
     {
         int id;
         string name;
@@ -29,13 +29,12 @@ namespace TransConnect_Console
             public int timeInMinutes;
         }
 
-        private static void CreateEdges(Ville v, Ville destination, int distance, int minutes){
-            Edge e1 = new Edge { destination = v, distance = distance, timeInMinutes = minutes };
-            destination.neighbours.Add(e1);
-            Edge e2 = new Edge { destination = destination, distance = distance, timeInMinutes = minutes };
-            v.neighbours.Add(e2);
-        }
 
+
+        /// <summary>
+        /// Populate the "Ville" static parameters by reading from a CSV file
+        /// </summary>
+        /// <param name="path">Path of the csv</param>
         public static void CreateVillesFromCsv(string path)
         {
             string[] cities = File.ReadAllLines(path);
@@ -86,6 +85,7 @@ namespace TransConnect_Console
             }
         }
 
+
         public override string ToString()
         {
             return $"id: {id}, name:{name}";
@@ -103,14 +103,6 @@ namespace TransConnect_Console
             }
         }
 
-        private static int TimeToMinutes(string s)
-        {
-            string[] els = s.Split('h');
-            if(els.Length == 2 && els[1] != "")
-                return Int32.Parse(els[0]) * 60 + Int32.Parse(els[1]);
-            else
-                return Int32.Parse(els[0].TrimEnd(new char[] {'m', 'n'}));
-        }
 
         public static void AddToVilles(Ville v)
         {
@@ -169,6 +161,17 @@ namespace TransConnect_Console
 
         }
 
+
+        #region utilities
+        // Utility function for CreateVillesFromCsv
+        private static void CreateEdges(Ville v, Ville destination, int distance, int minutes){
+            Edge e1 = new Edge { destination = v, distance = distance, timeInMinutes = minutes };
+            destination.neighbours.Add(e1);
+            Edge e2 = new Edge { destination = destination, distance = distance, timeInMinutes = minutes };
+            v.neighbours.Add(e2);
+        }
+        
+        // Utility function for Dijkstra's algorithm
         private static Ville RemoveMinVille(List<Ville> q, Dictionary<Ville, int> dist)
         {
             int distance = Int32.MaxValue;
@@ -185,6 +188,18 @@ namespace TransConnect_Console
 
             return v;
         }
+        
+        // Utility function to parse a time in string format to an integer representing the number of minutes
+        private static int TimeToMinutes(string s)
+        {
+            string[] els = s.Split('h');
+            if(els.Length == 2 && els[1] != "")
+                return Int32.Parse(els[0]) * 60 + Int32.Parse(els[1]);
+            else
+                return Int32.Parse(els[0].TrimEnd(new char[] {'m', 'n'}));
+        }
+
+        #endregion
 
     }
 }
