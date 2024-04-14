@@ -14,8 +14,12 @@ namespace TransConnect_Console
             //Client.TestClientsComparaisons();
             //Console.ReadLine();
 
-            Salarie.GetFromFile("../../../Ressources/Employes.csv");
+            Salarie.GetFromFile("../../../Ressources/TestEmployeesFile.csv");
             Salarie.PrintFullCompanyTree(Salarie.CEO);
+            Salarie.PromptCreate();
+            Salarie.PrintFullCompanyTree(Salarie.CEO);
+            Salarie.SaveToFile("../../../Ressources/TestEmployeesFile.csv");
+
             Console.ReadLine();
 
             //Ville.CreateVillesFromCsv("../../../Ressources/Distances.csv");

@@ -1,13 +1,5 @@
-﻿using Microsoft.SqlServer.Server;
-using System;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace TransConnect_Console
 {
@@ -17,20 +9,20 @@ namespace TransConnect_Console
 
         // non-editable
         private DateTime dateJoined;
+        private int uid;
 
         // editable
         private string role;
         private int salary;
-        private int uid;
 
-        public int Uid 
-        { 
+        public int Uid
+        {
             get { return uid; }
         }
 
         // n-ary tree properties
         public static Salarie CEO;
-     
+
         public Salarie manager;
         public Salarie managees;
         public Salarie nextColleague;
@@ -68,13 +60,13 @@ namespace TransConnect_Console
             s.manager = this;
 
             Salarie lastManagee = managees;
-            if(lastManagee == null)
+            if (lastManagee == null)
             {
                 managees = s;
                 return;
             }
 
-            while(lastManagee.nextColleague != null)
+            while (lastManagee.nextColleague != null)
             {
                 lastManagee = lastManagee.nextColleague;
             }
@@ -89,7 +81,7 @@ namespace TransConnect_Console
         /// </summary>
         public new static Salarie PromptCreate()
         {
-            Personne.PersonneStruct p = Personne.PromptCreate();
+            PersonneStruct p = Personne.PromptCreate();
 
             Console.WriteLine("Rôle du salarié: ");
             string role = Console.ReadLine();
@@ -98,21 +90,31 @@ namespace TransConnect_Console
             int salaire;
             do
             {
-                Console.WriteLine("(long) Salaire: ");
-                string num = Console.ReadLine().Trim().Normalize();
+                Console.WriteLine("(int) Salaire: ");
+                string num = Console.ReadLine().Trim();
                 success = Int32.TryParse(num, out salaire);
 
             } while (!success);
 
-            //TODO Implement manager
-            
+            success = false;
+            int managerId;
+            do
+            {
+                Console.WriteLine("(int) ManagerID: ");
+                string num = Console.ReadLine().Trim();
+                success = Int32.TryParse(num, out managerId);
+            } while (!success);
 
-            return new Salarie(p, role, salaire);
+            Salarie s = new Salarie(p, role, salaire);
+            Salarie manager = GetSalarieByUid(managerId);
+            manager.managees = s;
+            s.manager = manager;
+
+            return s;
         }
 
         public static Salarie GetSalarieByUid(int id)
         {
-            // On parcourt l'arbre à partir du CEO
             return GetSalarieRecursive(CEO, id);
         }
 
@@ -140,11 +142,11 @@ namespace TransConnect_Console
         {
             string[] employeeData = File.ReadAllLines(path);
 
-            for(int i = 1; i < employeeData.Length; i++)
+            for (int i = 1; i < employeeData.Length; i++)
             {
                 string[] data = employeeData[i].Split(',');
 
-                Addresse a = new Addresse { City = data[8], StreetNumber = Int32.Parse(data[9]), StreetName= data[10] };
+                Addresse a = new Addresse { City = data[8], StreetNumber = Int32.Parse(data[9]), StreetName = data[10] };
 
                 string[] date = data[7].Split('/');
                 DateTime d = new DateTime(Int32.Parse(date[2]), Int32.Parse(date[1]), Int32.Parse(date[0]));
@@ -161,24 +163,50 @@ namespace TransConnect_Console
                 };
 
                 Salarie s = new Salarie(p, data[11], int.Parse(data[12]));
+                s.uid = Int32.Parse(data[0]);
 
                 // Handle managerial stuff - should probably be condensed into a method
+                Console.WriteLine("'" + data[1] + "'");
                 if (data[1] == "")
                 {
                     CEO = s;
+                    Console.WriteLine("READDD");
                 }
                 else
                 {
+                    Console.WriteLine(data[0] + " " + data[1]);
                     Salarie manager = GetSalarieByUid(Int32.Parse(data[1]));
                     s.manager = manager;
                     manager.AddManagee(s);
                 }
+                PrintFullCompanyTree(CEO);
             }
         }
 
         public static void SaveToFile(string path)
         {
-            throw new NotImplementedException();
+            string fullFileContent = "id,managerid,firstname,lastname,email,phone,social_security_number,birthdate,city,streetNum,streetName,role,salary,dateJoined\n";
+            fullFileContent += NextGuyToString(CEO);
+
+            File.WriteAllText(path, fullFileContent);
+        }
+
+        private static string NextGuyToString(Salarie s)
+        {
+            if (s == null)
+                return "";
+
+            string managerUid;
+            if (s.manager == null) 
+                managerUid = "";
+            else 
+                managerUid = s.manager.Uid.ToString();
+
+            string fileContent = $"{s.Uid},{managerUid},{s.Firstname},{s.Lastname},{s.Email},{s.Telephone},{s.SsNumber},{s.Birthdate.ToShortDateString()}," +
+                $"{s.Address.City},{s.Address.StreetNumber},{s.Address.StreetName},{s.Role},{s.Salary},{s.dateJoined.ToShortDateString()}\n";
+            fileContent += NextGuyToString(s.nextColleague);
+            fileContent += NextGuyToString(s.managees);
+            return fileContent;
         }
 
         public override string ToString()
