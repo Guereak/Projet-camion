@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TransConnect_Console
 {
-    class Commande
+    class Commande : ISaveable
     {
         private Client client;
         private Ville deliveryStartingPoint;
@@ -15,6 +15,7 @@ namespace TransConnect_Console
         private double totalPrice;
         private Chauffeur chauffeur;
         private Vehicule vehicle;
+        private DateTime orderDate;
 
         public double TotalPrice
         {
@@ -22,16 +23,19 @@ namespace TransConnect_Console
             set { totalPrice = value; } // For test purposes only
         }
 
-        public Commande(Client client, Ville deliveryStartingPoint, Ville deliveryDestinationPoint, Vehicule vehicle, Chauffeur chauffeur)
+        public Commande(Client client, Ville deliveryStartingPoint, Ville deliveryDestinationPoint, Vehicule vehicle, DateTime orderDate)
         {
             this.client = client;
             this.deliveryStartingPoint = deliveryStartingPoint;
             this.deliveryDestinationPoint = deliveryDestinationPoint;
             this.vehicle = vehicle;
-            this.chauffeur = chauffeur;
+            this.orderDate = orderDate;
 
             totalPrice = ComputeOrderPrice();
+            //chauffeur = Chauffeur.FindChauffeurForDate(orderDate);
         }
+
+
 
         // FOR TEST PURPOSES ONLY
         public Commande() { }

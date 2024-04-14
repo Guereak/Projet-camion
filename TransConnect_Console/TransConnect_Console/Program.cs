@@ -14,12 +14,16 @@ namespace TransConnect_Console
             //Client.TestClientsComparaisons();
             //Console.ReadLine();
 
-            Ville.CreateVillesFromCsv("../../Ressources/Distances.csv");
-            Ville.DisplayVilles();
+            Salarie.GetFromFile("../../../Ressources/Employes.csv");
+            Salarie.PrintFullCompanyTree(Salarie.CEO);
             Console.ReadLine();
 
-            Ville.Dijkstra(Ville.villes[0], Ville.villes[5]);
-            Console.ReadLine();
+            //Ville.CreateVillesFromCsv("../../../Ressources/Distances.csv");
+            //Ville.DisplayVilles();
+            //Console.ReadLine();
+
+            //Ville.Dijkstra(Ville.villes[0], Ville.villes[5]);
+            //Console.ReadLine();
 
             //Personne.PromptCreate();
 
@@ -40,4 +44,3 @@ namespace TransConnect_Console
         }
     }
 }
-<

@@ -8,16 +8,10 @@ using System.Threading.Tasks;
 
 namespace TransConnect_Console
 {
-    class Client : Personne, IComparable<Client>
+    class Client : Personne, IComparable<Client>, ISaveable
     {
         private List<Commande> pastOrders = new List<Commande>();
         public static List<Client> clients = new List<Client>();
-
-        public void CreateOrder(Ville deliveryStart, Ville deliveryDestination, Vehicule vehicle, Chauffeur chauffeur)
-        {
-            Commande order = new Commande(this, deliveryStart, deliveryDestination, vehicle, chauffeur);
-            pastOrders.Add(order);
-        }
 
         public int CompareTo(Client other)
         {
@@ -92,5 +86,17 @@ namespace TransConnect_Console
 
             return s;
         }
+
+        public void CreateOrder(Ville deliveryStart, Ville deliveryDestination, Vehicule vehicle, DateTime date)
+        {
+            Commande c = new Commande(this, deliveryStart, deliveryDestination, vehicle, date);
+        }
+
+        // TODO IMPLEMENT
+        public void SaveToFile(string path)
+        {
+
+        }
+
     }
 }

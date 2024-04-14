@@ -11,6 +11,7 @@ namespace TransConnect_Console
         private double hourlyRate;
         List<DateTime> bookedOn;
 
+
         public bool CheckAvailability(DateTime date)
         {
             foreach(var item in bookedOn)
@@ -23,6 +24,11 @@ namespace TransConnect_Console
                     return false;
             }
             return true;
+        }
+
+        public static void FindChauffeurForDate(DateTime date)
+        {
+
         }
     }
 }

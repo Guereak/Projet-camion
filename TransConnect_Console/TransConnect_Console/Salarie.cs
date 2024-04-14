@@ -1,5 +1,6 @@
 ﻿using Microsoft.SqlServer.Server;
 using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,10 +23,17 @@ namespace TransConnect_Console
         private int salary;
         private int uid;
 
-        // non-explicitely mentionned properties
-        public Salarie manager;
-        public ListeChainee<Salarie> managees = new ListeChainee<Salarie>();
+        public int Uid 
+        { 
+            get { return uid; }
+        }
+
+        // n-ary tree properties
         public static Salarie CEO;
+     
+        public Salarie manager;
+        public Salarie managees;
+        public Salarie nextColleague;
 
         #region editableProperties
 
@@ -43,80 +51,37 @@ namespace TransConnect_Console
 
         #endregion
 
-        #region TempMethods
-        //public static void PrintFullCompanyTree()
-        //{
-        //    CEO.PrintCompanyTree("", true);
-        //}
-
-        //public void PrintCompanyTree(string indent, bool last)
-        //{
-        //    Console.Write(indent);
-        //    if (last)
-        //    {
-        //        Console.Write("\\-");
-        //        indent += "  ";
-        //    }
-        //    else
-        //    {
-        //        Console.Write("|-");
-        //        indent += "|   ";
-        //    }
-        //    Console.WriteLine(Lastname);
-
-        //    for (int i = 0; i < managees.Count; i++)
-        //        managees[i].PrintCompanyTree(indent, i == managees.Count - 1);
-        //}
-
-        //public static void TestPopulateEmployees()
-        //{
-        //    Salarie Dupont  = new Salarie { Lastname = "Dupont"};
-        //    Salarie Fiesta = new Salarie { Lastname = "Fiesta"};
-        //    Salarie Fetard = new Salarie { Lastname = "Fetard"};
-        //    Salarie Joyeuse = new Salarie { Lastname = "Joyeuse"};
-        //    Salarie GripSous = new Salarie { Lastname = "GripSous"};
-        //    Salarie Forge = new Salarie { Lastname = "Forge" };
-        //    Salarie Fermi = new Salarie { Lastname = "Fermi" };
-        //    Salarie Royal = new Salarie { Lastname = "Royal" };
-        //    Salarie Prince = new Salarie { Lastname = "Prince" };
-        //    Salarie Romu = new Salarie { Lastname = "Romu" };
-        //    Salarie Romi = new Salarie { Lastname = "Romi" };
-        //    Salarie Roma = new Salarie { Lastname = "Roma" };
-        //    Salarie Rome = new Salarie { Lastname = "Rome" };
-        //    Salarie Rimou = new Salarie { Lastname = "Rimou" };
-        //    Salarie Couleur = new Salarie { Lastname = "Couleur" };
-        //    Salarie ToutLeMonde = new Salarie { Lastname = "ToutLeMonde" };
-        //    Salarie Picsou = new Salarie { Lastname = "Picsou" };
-        //    Salarie GrosSous = new Salarie { Lastname = "GrosSous" };
-        //    Salarie Fournier = new Salarie { Lastname = "Fournier" };
-        //    Salarie Gautier = new Salarie { Lastname = "Gautier" };
-
-
-        //    CEO = Dupont;
-        //    Dupont.managees.AddRange(new List<Salarie>{ Fiesta, Fetard, Joyeuse, GripSous});
-        //    Fiesta.managees.AddRange(new List<Salarie>{ Forge, Fermi});
-        //    Fetard.managees.AddRange(new List<Salarie>{ Royal, Prince});
-        //    Royal.managees.AddRange(new List<Salarie>{ Romu, Romi, Roma });
-        //    Prince.managees.AddRange(new List<Salarie>{ Rome, Rimou });
-        //    Joyeuse.managees.AddRange(new List<Salarie>{ Couleur, ToutLeMonde });
-        //    GripSous.managees.AddRange(new List<Salarie>{ Picsou, GrosSous });
-        //    Picsou.managees.AddRange(new List<Salarie>{ Fournier, Gautier });
-        //}
-
-        #endregion
-
         public Salarie(PersonneStruct personneStruct, string role, int salary) : base(personneStruct)
         {
             this.role = role;
             this.salary = salary;
             uidCounter++;
+            uid = uidCounter;
         }
 
         // Blank constructor. Only for test purposes
-        public Salarie()
-        {
+        public Salarie() { }
 
+
+        public void AddManagee(Salarie s)
+        {
+            s.manager = this;
+
+            Salarie lastManagee = managees;
+            if(lastManagee == null)
+            {
+                managees = s;
+                return;
+            }
+
+            while(lastManagee.nextColleague != null)
+            {
+                lastManagee = lastManagee.nextColleague;
+            }
+
+            lastManagee.nextColleague = s;
         }
+
 
         /// <summary>
         /// Create a Salarie using the console.
@@ -145,13 +110,33 @@ namespace TransConnect_Console
             return new Salarie(p, role, salaire);
         }
 
-        public static Salarie GetSalarieByUid()
+        public static Salarie GetSalarieByUid(int id)
         {
             // On parcourt l'arbre à partir du CEO
-            throw new NotImplementedException();
+            return GetSalarieRecursive(CEO, id);
         }
 
-        public void GetFromFile(string path)
+        public static Salarie GetSalarieRecursive(Salarie s, int id)
+        {
+            if (s == null) return null;
+
+            if (s.Uid == id)
+            {
+                return s;
+            }
+
+            // Search in the next colleague
+            Salarie foundInNextColleague = GetSalarieRecursive(s.nextColleague, id);
+            if (foundInNextColleague != null)
+            {
+                return foundInNextColleague; // If found in next colleague, return it
+            }
+
+            // If not found in next colleague, search in managees
+            return GetSalarieRecursive(s.managees, id);
+        }
+
+        public static void GetFromFile(string path)
         {
             string[] employeeData = File.ReadAllLines(path);
 
@@ -162,7 +147,7 @@ namespace TransConnect_Console
                 Addresse a = new Addresse { City = data[8], StreetNumber = Int32.Parse(data[9]), StreetName= data[10] };
 
                 string[] date = data[7].Split('/');
-                DateTime d = new DateTime(int.Parse(date[2]), int.Parse(date[1]), int.Parse(date[0]));
+                DateTime d = new DateTime(Int32.Parse(date[2]), Int32.Parse(date[1]), Int32.Parse(date[0]));
 
                 PersonneStruct p = new PersonneStruct
                 {
@@ -176,12 +161,42 @@ namespace TransConnect_Console
                 };
 
                 Salarie s = new Salarie(p, data[11], int.Parse(data[12]));
+
+                // Handle managerial stuff - should probably be condensed into a method
+                if (data[1] == "")
+                {
+                    CEO = s;
+                }
+                else
+                {
+                    Salarie manager = GetSalarieByUid(Int32.Parse(data[1]));
+                    s.manager = manager;
+                    manager.AddManagee(s);
+                }
             }
         }
 
-        public void SaveToFile(string path)
+        public static void SaveToFile(string path)
         {
             throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + " ROLE " + role;
+        }
+
+        public static void PrintFullCompanyTree(Salarie s, string indent="")
+        {
+            Console.WriteLine(indent + s.ToString());
+            if(s.managees != null)
+            {
+                PrintFullCompanyTree(s.managees, indent + "  ");
+            }
+            if(s.nextColleague != null)
+            {
+                PrintFullCompanyTree(s.nextColleague, indent);
+            }
         }
     }
 }

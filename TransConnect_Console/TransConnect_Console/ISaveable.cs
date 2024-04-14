@@ -8,7 +8,7 @@ namespace TransConnect_Console
 {
     interface ISaveable
     {
-        void SaveToFile(string path);
-        void GetFromFile(string path);
+        static void SaveToFile(string path) => throw new NotImplementedException();
+        static void GetFromFile(string path) => throw new NotImplementedException();
     }
 }
