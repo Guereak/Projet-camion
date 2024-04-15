@@ -211,7 +211,7 @@ namespace TransConnect_Console
         public override string ToString()
         {
             string s = "| " + Lastname.ToUpper() + " " + Firstname + ", " + Address.StreetNumber + " " + address.StreetName + ", " + address.City.ToUpper();
-            s += "\n|" + Email + "," + Telephone;
+            s += "\n| " + Email + "," + Telephone;
             return s;
         }
     }

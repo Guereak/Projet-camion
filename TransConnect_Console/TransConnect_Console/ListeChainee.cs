@@ -8,10 +8,9 @@ using System.Threading.Tasks;
 
 namespace TransConnect_Console
 {
-    public class ListeChainee<T> : IEnumerable, IEnumerator
+    public class ListeChainee<T> : IEnumerable
     {
         public Node<T> tete;
-        private int Position;
 
 
         public T this[int i]
@@ -94,31 +93,44 @@ namespace TransConnect_Console
             return sum;
         }
 
-        public bool MoveNext()
-        {
-            if(Position < Count)
-            {
-                Position++;
-                return true;
-            }
-            return false;
-        }
 
-        public void Reset()
+
+        private class LCEnumerator : IEnumerator
         {
-            Position = -1;
-        }
-        public object Current
-        {
-            get
+            private int Position = -1;
+            private ListeChainee<T> instance;
+
+            public LCEnumerator(ListeChainee<T> inst)
             {
-                return this[Position];
+                instance = inst;
+            }
+
+            public bool MoveNext()
+            {
+                if (Position < instance.Count - 1)
+                {
+                    Position++;
+                    return true;
+                }
+                return false;
+            }
+
+            public void Reset()
+            {
+                Position = -1;
+            }
+            public object Current
+            {
+                get
+                {
+                    return instance[Position];
+                }
             }
         }
 
         // Implementing IEnumerable
         public IEnumerator GetEnumerator() {
-            return (IEnumerator)this;
+            return new LCEnumerator(this);
         }
     }
 }

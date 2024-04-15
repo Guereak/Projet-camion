@@ -61,10 +61,14 @@ namespace TransConnect_Console
             Commande c = new Commande(this, deliveryStart, deliveryDestination, vehicle, date);
         }
 
-        // TODO IMPLEMENT
-        public void SaveToFile(string path)
+        public static void SaveToFile(string path)
         {
-
+            string s = "clientID,firstname, lastname, DD/MM/YYYY, email, city, streetname, streetnumber, telephone, ssnumber\n";
+            foreach(Client c in clients)
+            {
+                s += $"{c.uid},{c.Firstname},{c.Lastname},{c.Birthdate.ToShortDateString()},{c.Email},{c.Address.City},{c.Address.StreetName},{c.Address.StreetNumber},{c.Telephone},{c.SsNumber}\n";
+            }
+            File.WriteAllText(path, s);
         }
 
         public static void GetFromFile(string path)
