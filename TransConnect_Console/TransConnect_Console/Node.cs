@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace TransConnect_Console
 {
-    class Node<T>
+    public class Node<T>
     {
         public Node<T> next;
         public T value;
+
+        public Node(T value)
+        {
+            this.value = value;
+        }
     }
 }

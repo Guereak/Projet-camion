@@ -1,0 +1,6 @@
+orderID, clientID, startCity, destinationCity, price, vehicleID, chauffeurID, date, description
+1,2,Paris,Bordeaux,2300,1,3,20/06/2024,Transport d'animaux sauvages
+2,5,Rouen,Lyon,1300,5,3,21/06/2024,N/A
+3,2,La Rochelle,Pau,1500,5,2,20/26/2024,Transport de Fonds
+4,1,Avignon,Toulon,800,2,1,22/06/2024,N/A
+5,5,Monaco,Lyon,5600,2,2,21/06/2024,N/A

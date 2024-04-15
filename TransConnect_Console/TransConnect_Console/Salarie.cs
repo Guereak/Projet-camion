@@ -107,6 +107,7 @@ namespace TransConnect_Console
 
             Salarie s = new Salarie(p, role, salaire);
             Salarie manager = GetSalarieByUid(managerId);
+            s.dateJoined = DateTime.Now;
             manager.managees = s;
             s.manager = manager;
 
@@ -165,12 +166,13 @@ namespace TransConnect_Console
                 Salarie s = new Salarie(p, data[11], int.Parse(data[12]));
                 s.uid = Int32.Parse(data[0]);
 
+                string[] dateJoined = data[13].Split('/');
+                s.dateJoined = new DateTime(Int32.Parse(dateJoined[2]), Int32.Parse(dateJoined[0]), Int32.Parse(dateJoined[0]));
+
                 // Handle managerial stuff - should probably be condensed into a method
-                Console.WriteLine("'" + data[1] + "'");
                 if (data[1] == "")
                 {
                     CEO = s;
-                    Console.WriteLine("READDD");
                 }
                 else
                 {
@@ -179,7 +181,6 @@ namespace TransConnect_Console
                     s.manager = manager;
                     manager.AddManagee(s);
                 }
-                PrintFullCompanyTree(CEO);
             }
         }
 
@@ -211,7 +212,7 @@ namespace TransConnect_Console
 
         public override string ToString()
         {
-            return base.ToString() + " ROLE " + role;
+            return base.ToString() + "\n| " + role;
         }
 
         public static void PrintFullCompanyTree(Salarie s, string indent="")
@@ -219,7 +220,7 @@ namespace TransConnect_Console
             Console.WriteLine(indent + s.ToString());
             if(s.managees != null)
             {
-                PrintFullCompanyTree(s.managees, indent + "  ");
+                PrintFullCompanyTree(s.managees, indent + "    ");
             }
             if(s.nextColleague != null)
             {

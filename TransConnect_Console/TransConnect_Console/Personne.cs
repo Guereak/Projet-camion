@@ -210,7 +210,9 @@ namespace TransConnect_Console
 
         public override string ToString()
         {
-            return Lastname.ToUpper() + " " + Firstname + " " + Address.City;
+            string s = "| " + Lastname.ToUpper() + " " + Firstname + ", " + Address.StreetNumber + " " + address.StreetName + ", " + address.City.ToUpper();
+            s += "\n|" + Email + "," + Telephone;
+            return s;
         }
     }
 }
