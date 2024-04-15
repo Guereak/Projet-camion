@@ -121,10 +121,7 @@ namespace TransConnect_Console
             }
             public object Current
             {
-                get
-                {
-                    return instance[Position];
-                }
+                get { return instance[Position]; }
             }
         }
 

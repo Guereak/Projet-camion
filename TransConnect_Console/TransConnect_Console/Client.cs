@@ -13,7 +13,9 @@ namespace TransConnect_Console
         private int uid;
         private int uidCounter;
 
-        private ListeChainee<Commande> pastOrders;
+        public int Uid {  get { return uid; } }
+
+        public ListeChainee<Commande> pastOrders;
         public static ListeChainee<Client> clients = new ListeChainee<Client>();
 
         public int CompareTo(Client other)
@@ -56,9 +58,9 @@ namespace TransConnect_Console
             return s;
         }
 
-        public void CreateOrder(Ville deliveryStart, Ville deliveryDestination, Vehicule vehicle, DateTime date)
+        public void AddOrder(Commande c)
         {
-            Commande c = new Commande(this, deliveryStart, deliveryDestination, vehicle, date);
+            pastOrders.Add(c);
         }
 
         public static void SaveToFile(string path)
@@ -100,6 +102,15 @@ namespace TransConnect_Console
             }        
         }
 
+        public static Client GetClientByUid(int id)
+        {
+            Node<Client> n = clients.tete;
+            while(n.value.uid != id)
+            {
+                n = n.next;
+            }
+            return n.value;
+        }
                 // TODO Add a PromptCreate
     }
 }

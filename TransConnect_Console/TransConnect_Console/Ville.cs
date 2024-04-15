@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace TransConnect_Console
 {
@@ -14,7 +12,7 @@ namespace TransConnect_Console
 
         private static int idCounter = 0;
         public static Dictionary<string, int> VilleToId = new Dictionary<string, int>();
-        public static Ville[] villes = new Ville[0];
+        public static Ville[] villes = Array.Empty<Ville>();
 
         public Ville(string name)
         {
@@ -29,7 +27,7 @@ namespace TransConnect_Console
             public int timeInMinutes;
         }
 
-
+        public string Name { get { return name; } }
 
         /// <summary>
         /// Populate the "Ville" static parameters by reading from a CSV file
@@ -161,6 +159,15 @@ namespace TransConnect_Console
 
         }
 
+        public static Ville FindByName(string name)
+        {
+            foreach(Ville v in villes)
+            {
+                if (v.name == name)
+                    return v;
+            }
+            return null;
+        }
 
         #region utilities
         // Utility function for CreateVillesFromCsv

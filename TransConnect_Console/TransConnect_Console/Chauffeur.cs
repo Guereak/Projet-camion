@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,12 +10,17 @@ namespace TransConnect_Console
     class Chauffeur : Salarie
     {
         private double hourlyRate;
-        List<DateTime> bookedOn;
+        public ListeChainee<DateTime> bookedOn;
 
+
+        public Chauffeur(PersonneStruct personneStruct, string role, int salary) : base(personneStruct, role, salary)
+        {
+            bookedOn = new ListeChainee<DateTime>();
+        }
 
         public bool CheckAvailability(DateTime date)
         {
-            foreach(var item in bookedOn)
+            foreach(DateTime item in bookedOn)
             {
                 if (item.Day != date.Day)
                     continue;
@@ -28,7 +34,7 @@ namespace TransConnect_Console
 
         public static void FindChauffeurForDate(DateTime date)
         {
-
+            throw new NotImplementedException();
         }
     }
 }

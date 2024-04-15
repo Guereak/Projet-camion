@@ -163,11 +163,20 @@ namespace TransConnect_Console
                     Address = a
                 };
 
-                Salarie s = new Salarie(p, data[11], int.Parse(data[12]));
+                Salarie s;
+                if (data[11] == "Chauffeur")
+                {
+                    s = new Chauffeur(p, data[11], int.Parse(data[12]));
+                }
+                else
+                {
+                    s = new Salarie(p, data[11], int.Parse(data[12]));
+                }
+
                 s.uid = Int32.Parse(data[0]);
 
                 string[] dateJoined = data[13].Split('/');
-                s.dateJoined = new DateTime(Int32.Parse(dateJoined[2]), Int32.Parse(dateJoined[0]), Int32.Parse(dateJoined[0]));
+                s.dateJoined = new DateTime(Int32.Parse(dateJoined[2]), Int32.Parse(dateJoined[1]), Int32.Parse(dateJoined[0]));
 
                 // Handle managerial stuff - should probably be condensed into a method
                 if (data[1] == "")

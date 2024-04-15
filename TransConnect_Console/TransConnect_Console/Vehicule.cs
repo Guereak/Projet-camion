@@ -11,7 +11,7 @@ namespace TransConnect_Console
         public static List<Vehicule> flotte = new List<Vehicule>();
         private int kilometrage = 0;
         private string name;
-
+        private string uid;
         public int Kilometrage
         {
             get { return kilometrage; }
@@ -22,6 +22,11 @@ namespace TransConnect_Console
         {
             get { return name; }
             set { name = value; }
+        }
+
+        public string Uid
+        {
+            get { return uid; }
         }
 
         public static void AfficheVehicules()
