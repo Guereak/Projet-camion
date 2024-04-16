@@ -64,11 +64,12 @@ namespace TransConnect_Console
 
                 Client client = Client.GetClientByUid(Int32.Parse(data[1]));
                 Salarie driver = Salarie.GetSalarieByUid(Int32.Parse(data[6]));
-                
+                Vehicule vehicule = Vehicule.GetVehiculeByUid(Int32.Parse(data[5]));
+
                 if(driver is not Chauffeur)
                     throw new Exception("The specified employee is not a driver");
 
-                Commande c = new Commande(client, v1, v2, null, orderDate, driver as Chauffeur, desc);
+                Commande c = new Commande(client, v1, v2, vehicule, orderDate, driver as Chauffeur, desc);
                 c.totalPrice = price;
                 c.uid = Int32.Parse(data[0]);
 
@@ -86,7 +87,7 @@ namespace TransConnect_Console
             {
                 foreach(Commande o in c.pastOrders)
                 {
-                    s += $"{o.uid},{c.Uid},{o.deliveryStartingPoint.Name},{o.deliveryDestinationPoint.Name},{o.totalPrice},IMPLEMENT_VEHICULE," +
+                    s += $"{o.uid},{c.Uid},{o.deliveryStartingPoint.Name},{o.deliveryDestinationPoint.Name},{o.totalPrice},{o.vehicle.Uid}," +
                         $"{o.chauffeur.Uid},{o.orderDate.ToShortDateString()},{o.description}\n";
                 }
             }

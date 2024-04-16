@@ -17,8 +17,8 @@ namespace TransConnect_Console
             Ville.CreateVillesFromCsv("../../../Ressources/Distances.csv");
             Salarie.GetFromFile("../../../Ressources/Employes.csv");
             Client.GetFromFile("../../../Ressources/Clients.csv");
-            Commande.GetFromFile("../../../Ressources/Commandes.csv");
             Vehicule.GetFromFile("../../../Ressources/Vehicules.csv");
+            Commande.GetFromFile("../../../Ressources/Commandes.csv");
 
             Vehicule.AfficheVehicules();
 

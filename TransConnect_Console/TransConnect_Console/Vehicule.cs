@@ -121,5 +121,14 @@ namespace TransConnect_Console
                 Console.WriteLine(v);
             }
         }
+
+        public static Vehicule GetVehiculeByUid(int uid)
+        {
+            foreach (Vehicule v in flotte)
+            {
+                if(v.uid == uid) return v;
+            }
+            return null;
+        }
     }
 }
