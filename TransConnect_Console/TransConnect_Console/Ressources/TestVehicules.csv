@@ -1,0 +1,5 @@
+vehiculeID, immat, kilometrage, vehiculeType, specParam1, specParam2, specParam31,CE65PM,25603,Voiture,5,,
+2,KP44FD,85004,Camionette,Tous usages,briques;,
+3,HK24BT,20503,Camion_benne,2,,True
+4,KT38FS,125422,Camion_citerne,CuveIndustrielle,
+5,UV93MP,3204,Camion_frigorifique,1,,

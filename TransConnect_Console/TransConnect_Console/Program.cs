@@ -18,11 +18,14 @@ namespace TransConnect_Console
             Salarie.GetFromFile("../../../Ressources/Employes.csv");
             Client.GetFromFile("../../../Ressources/Clients.csv");
             Commande.GetFromFile("../../../Ressources/Commandes.csv");
+            Vehicule.GetFromFile("../../../Ressources/Vehicules.csv");
 
+            Vehicule.AfficheVehicules();
 
             Salarie.SaveToFile("../../../Ressources/TestEmployeesFile.csv");
             Client.SaveToFile("../../../Ressources/TestClients.csv");
             Commande.SaveToFile("../../../Ressources/TestCommandes.csv");
+            Vehicule.SaveToFile("../../../Ressources/TestVehicules.csv");
 
             Console.ReadLine();
 
