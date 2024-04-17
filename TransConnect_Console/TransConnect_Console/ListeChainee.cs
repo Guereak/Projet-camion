@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -77,6 +78,22 @@ namespace TransConnect_Console
             }
 
             ret.next = new Node<T>(val);  
+
+        }
+
+        public ListeChainee<T> FindAll(Predicate<T> match)
+        {
+            ListeChainee<T> newList = new ListeChainee<T>();
+
+            foreach(T t in this)
+            {
+                if (match(t))
+                {
+                    newList.Add(t);
+                }
+            }
+            
+            return newList;
         }
 
         public double Sum(Func<T, double> f)

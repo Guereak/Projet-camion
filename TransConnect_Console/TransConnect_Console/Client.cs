@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Collections;
+using System.Security.Cryptography.X509Certificates;
 
 
 
@@ -112,5 +113,81 @@ namespace TransConnect_Console
             return n.value;
         }
                 // TODO Add a PromptCreate
+
+        public void PromptCreateCommande()
+        {
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+
+            Ville startCity = null;
+            Ville destCity = null;
+
+            while(startCity == null)
+            {
+                Console.Write("Ville de départ: ");
+                startCity = Ville.FindByName(Console.ReadLine());
+            }
+            while(destCity == null)
+            {
+                Console.Write("Ville d'arrivée: ");
+                destCity = Ville.FindByName(Console.ReadLine());
+            }
+
+            Console.Write("Description de la commande: ");
+            string desc = Console.ReadLine();
+
+            Console.Clear();
+            Vehicule.AfficherFlotte();
+
+            Vehicule v = null;
+            
+            while(v == null)
+            {
+                Console.Write("Entrez l'ID du véhicule désiré: ");
+                v = Vehicule.GetVehiculeByUid(Int32.Parse(Console.ReadLine()));
+            }
+
+            Console.Clear();
+
+            //TODO ALSO CHECK IF AVAILABLE
+            ListeChainee<Salarie> drivers = Salarie.CEO.FindAll(x => x.Role == "Chauffeur");
+            int[] driverIds = new int[drivers.Count];
+
+            for(int i = 0; i < drivers.Count; i++)
+            {
+                driverIds[i] = drivers[i].Uid;
+                Console.WriteLine(drivers[i].ToString() + "\n");
+            }
+
+            int driverId;
+            bool success;
+
+            Chauffeur driver = null;
+            while(driver == null)
+            {
+                do
+                {
+                    Console.WriteLine("(int) ID du chauffeur: ");
+                    string num = Console.ReadLine().Trim();
+                    success = Int32.TryParse(num, out driverId);
+
+                } while (!success);
+
+                driver = Salarie.GetSalarieByUid(driverId) as Chauffeur;
+            }
+
+            DateTime parsedDate;
+            success = false;
+
+            do
+            {
+                Console.Write("Date (DD/MM/YYYY): ");
+                success = DateTime.TryParseExact(Console.ReadLine(), "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out parsedDate);
+            } while (!success);
+
+            Commande c = new Commande(this, startCity, destCity, v, parsedDate, driver, desc);
+            this.pastOrders.Add(c);
+
+            Console.WriteLine("Commande ajoutée.");
+        }
     }
 }

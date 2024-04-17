@@ -48,7 +48,7 @@ namespace TransConnect_Console
 
         public override string ToString()
         {
-            return $"{uid}, {immat}, km: {kilometrage}";
+            return $"{uid}: {immat}, km: {kilometrage}";
         }
 
         public static void SaveToFile(string path)

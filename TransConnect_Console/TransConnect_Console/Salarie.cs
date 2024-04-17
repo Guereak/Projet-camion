@@ -221,7 +221,7 @@ namespace TransConnect_Console
 
         public override string ToString()
         {
-            return base.ToString() + "\n| " + role;
+            return base.ToString() + "\n| ID=" + uid + ", " + role;
         }
 
         public static void PrintFullCompanyTree(Salarie s, string indent="")
@@ -235,6 +235,25 @@ namespace TransConnect_Console
             {
                 PrintFullCompanyTree(s.nextColleague, indent);
             }
+        }
+
+        public ListeChainee<Salarie> FindAll(Predicate<Salarie> pred)
+        {
+            ListeChainee<Salarie> found = new ListeChainee<Salarie>();
+            FindAllRec(pred, this, found);
+            return found;
+        }
+
+        private void FindAllRec(Predicate<Salarie> pred, Salarie current, ListeChainee<Salarie> found)
+        {
+            if (current == null)
+                return;
+
+            if (pred(current))
+                found.Add(current);
+
+            FindAllRec(pred, current.nextColleague, found);
+            FindAllRec(pred, current.managees, found);
         }
     }
 }

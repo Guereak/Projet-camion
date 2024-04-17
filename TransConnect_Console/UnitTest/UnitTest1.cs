@@ -35,5 +35,17 @@ namespace UnitTest
             Assert.AreEqual(listeChainee.Sum(x => x), 25);
 
         }
+
+        [TestMethod]
+        public void TestFindAll()
+        {
+            ListeChainee<int> listeChainee = new ListeChainee<int> { 1, 3, 4, 6, 9 };
+            ListeChainee<int> newList = listeChainee.FindAll(x => x % 2 == 1);
+
+            Assert.AreEqual(newList.Count, 3);
+            Assert.AreEqual(newList[0], 1);
+            Assert.AreEqual(newList[1], 3);
+            Assert.AreEqual(newList[2], 9);
+        }
     }
 }

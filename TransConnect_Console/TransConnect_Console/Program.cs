@@ -14,13 +14,15 @@ namespace TransConnect_Console
             //Client.TestClientsComparaisons();
             //Console.ReadLine();
 
+
             Ville.CreateVillesFromCsv("../../../Ressources/Distances.csv");
             Salarie.GetFromFile("../../../Ressources/Employes.csv");
             Client.GetFromFile("../../../Ressources/Clients.csv");
             Vehicule.GetFromFile("../../../Ressources/Vehicules.csv");
             Commande.GetFromFile("../../../Ressources/Commandes.csv");
 
-            Vehicule.AfficheVehicules();
+            Client c = Client.GetClientByUid(1);
+            c.PromptCreateCommande();
 
             Salarie.SaveToFile("../../../Ressources/TestEmployeesFile.csv");
             Client.SaveToFile("../../../Ressources/TestClients.csv");
