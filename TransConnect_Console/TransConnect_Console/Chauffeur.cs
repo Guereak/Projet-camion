@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,6 +36,14 @@ namespace TransConnect_Console
         public static void FindChauffeurForDate(DateTime date)
         {
             throw new NotImplementedException();
+        }
+
+        public void AddOrderDate(DateTime date)
+        {
+            if (!CheckAvailability(date))
+                throw new Exception("Le chauffeur a déjà une livraison de prévue ce jour là!");
+
+            bookedOn.Add(date);
         }
     }
 }

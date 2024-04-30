@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TransConnect_Console.Modules;
 
 namespace TransConnect_Console
 {
@@ -14,6 +15,7 @@ namespace TransConnect_Console
             //Client.TestClientsComparaisons();
             //Console.ReadLine();
 
+            ModuleClient.TestMenu();
 
             Ville.CreateVillesFromCsv("../../../Ressources/Distances.csv");
             Salarie.GetFromFile("../../../Ressources/Employes.csv");
@@ -22,7 +24,10 @@ namespace TransConnect_Console
             Commande.GetFromFile("../../../Ressources/Commandes.csv");
 
             Client c = Client.GetClientByUid(1);
-            c.PromptCreateCommande();
+            while (true)
+            {
+                c.PromptCreateCommande();
+            }
 
             Salarie.SaveToFile("../../../Ressources/TestEmployeesFile.csv");
             Client.SaveToFile("../../../Ressources/TestClients.csv");

@@ -112,12 +112,10 @@ namespace TransConnect_Console
             }
             return n.value;
         }
-                // TODO Add a PromptCreate
+
 
         public void PromptCreateCommande()
         {
-            Console.BackgroundColor = ConsoleColor.DarkBlue;
-
             Ville startCity = null;
             Ville destCity = null;
 
@@ -148,18 +146,31 @@ namespace TransConnect_Console
 
             Console.Clear();
 
+
+
+
+            DateTime parsedDate;
+            bool success;
+
+            do
+            {
+                Console.Write("Date (DD/MM/YYYY): ");
+                success = DateTime.TryParseExact(Console.ReadLine(), "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out parsedDate);
+            } while (!success);
+
+
             //TODO ALSO CHECK IF AVAILABLE
-            ListeChainee<Salarie> drivers = Salarie.CEO.FindAll(x => x.Role == "Chauffeur");
+            ListeChainee<Salarie> drivers = Salarie.CEO.FindAll(x => x.Role == "Chauffeur" && (x as Chauffeur).CheckAvailability(parsedDate));
             int[] driverIds = new int[drivers.Count];
 
-            for(int i = 0; i < drivers.Count; i++)
+            for (int i = 0; i < drivers.Count; i++)
             {
                 driverIds[i] = drivers[i].Uid;
                 Console.WriteLine(drivers[i].ToString() + "\n");
             }
 
             int driverId;
-            bool success;
+            success = false;
 
             Chauffeur driver = null;
             while(driver == null)
@@ -174,15 +185,8 @@ namespace TransConnect_Console
 
                 driver = Salarie.GetSalarieByUid(driverId) as Chauffeur;
             }
+            driver.AddOrderDate(parsedDate);
 
-            DateTime parsedDate;
-            success = false;
-
-            do
-            {
-                Console.Write("Date (DD/MM/YYYY): ");
-                success = DateTime.TryParseExact(Console.ReadLine(), "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out parsedDate);
-            } while (!success);
 
             Commande c = new Commande(this, startCity, destCity, v, parsedDate, driver, desc);
             this.pastOrders.Add(c);
