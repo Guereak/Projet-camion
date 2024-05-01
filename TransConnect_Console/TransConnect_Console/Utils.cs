@@ -26,8 +26,10 @@ namespace TransConnect_Console
                     if (option % dict.Count == index)
                     {
                         Console.ForegroundColor = selectedColor;
+                        Console.WriteLine("> " + kvp.Key);
                     }
-                    Console.WriteLine(kvp.Key);
+                    else
+                        Console.WriteLine(kvp.Key);
                     Console.ForegroundColor = ConsoleColor.White;
                     index++;
                 }

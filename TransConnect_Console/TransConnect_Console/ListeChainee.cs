@@ -49,6 +49,9 @@ namespace TransConnect_Console
 
         T GetAt(int i)
         {
+            if (tete == null)
+                throw new IndexOutOfRangeException();
+
             int counter = 0;
             Node<T> ret = tete;
 

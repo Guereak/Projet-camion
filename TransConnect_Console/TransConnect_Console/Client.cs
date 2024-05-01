@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Collections;
+using System.Threading;
 using System.Security.Cryptography.X509Certificates;
 
 
@@ -12,9 +13,16 @@ namespace TransConnect_Console
     class Client : Personne, IComparable<Client>, ISaveable
     {
         private int uid;
-        private int uidCounter;
+        private static int uidCounter;
+        private string password;
 
         public int Uid {  get { return uid; } }
+
+        public string Password
+        {
+            get { return password; }
+            set { password = value; }
+        }
 
         public ListeChainee<Commande> pastOrders;
         public static ListeChainee<Client> clients = new ListeChainee<Client>();
@@ -27,6 +35,7 @@ namespace TransConnect_Console
         public Client(PersonneStruct p) : base(p)
         {
             uidCounter++;
+            uid = uidCounter;
             pastOrders = new ListeChainee<Commande>();
             clients.Add(this);
         }
@@ -69,7 +78,7 @@ namespace TransConnect_Console
             string s = "clientID,firstname, lastname, DD/MM/YYYY, email, city, streetname, streetnumber, telephone, ssnumber\n";
             foreach(Client c in clients)
             {
-                s += $"{c.uid},{c.Firstname},{c.Lastname},{c.Birthdate.ToShortDateString()},{c.Email},{c.Address.City},{c.Address.StreetName},{c.Address.StreetNumber},{c.Telephone},{c.SsNumber}\n";
+                s += $"{c.uid},{c.Firstname},{c.Lastname},{c.Birthdate.ToShortDateString()},{c.Email},{c.Address.City},{c.Address.StreetName},{c.Address.StreetNumber},{c.Telephone},{c.SsNumber},{c.Password}\n";
             }
             File.WriteAllText(path, s);
         }
@@ -100,7 +109,18 @@ namespace TransConnect_Console
 
                 Client c = new Client(p);
                 c.uid = Int32.Parse(data[0]);
+                c.Password = data[10];
             }        
+        }
+
+        public static Client Login(string email, string password)
+        {
+            ListeChainee<Client> withEmail = clients.FindAll(x => x.Email == email);
+
+            if (withEmail.Count == 1 && withEmail[0].Password == password)
+                return withEmail[0];
+
+            throw new Exception("Wrong email or password");
         }
 
         public static Client GetClientByUid(int id)
@@ -146,9 +166,6 @@ namespace TransConnect_Console
 
             Console.Clear();
 
-
-
-
             DateTime parsedDate;
             bool success;
 
@@ -158,8 +175,6 @@ namespace TransConnect_Console
                 success = DateTime.TryParseExact(Console.ReadLine(), "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out parsedDate);
             } while (!success);
 
-
-            //TODO ALSO CHECK IF AVAILABLE
             ListeChainee<Salarie> drivers = Salarie.CEO.FindAll(x => x.Role == "Chauffeur" && (x as Chauffeur).CheckAvailability(parsedDate));
             int[] driverIds = new int[drivers.Count];
 
@@ -192,6 +207,32 @@ namespace TransConnect_Console
             this.pastOrders.Add(c);
 
             Console.WriteLine("Commande ajoutée.");
+        }
+
+        public static new Client PromptCreate()
+        {
+            PersonneStruct p = Personne.PromptCreate();
+
+            Client c = new Client(p);
+
+            Console.Write("Choisissez un mot de passe: ");
+            string s1 = Console.ReadLine();
+            Console.Write("Confirmez le mot de passe: ");
+            string s2 = Console.ReadLine();
+
+            while (s1 != s2)
+            {
+                Console.Clear();
+
+                Console.WriteLine("Les 2 mots de passe choisis ne sont pas les mêmes");
+                Console.Write("Choisissez un mot de passe: ");
+                s1 = Console.ReadLine();
+                Console.Write("Confirmez le mot de passe: ");
+                s2 = Console.ReadLine();
+            }
+
+            c.Password = s1;
+            return c;
         }
     }
 }

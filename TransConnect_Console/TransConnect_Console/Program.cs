@@ -11,28 +11,19 @@ namespace TransConnect_Console
     {
         static void Main(string[] args)
         {
-            //Client.TestPopulateClients();
-            //Client.TestClientsComparaisons();
-            //Console.ReadLine();
+            Initialize();
 
-            ModuleClient.TestMenu();
+            ModuleClient.LoginMenu();
 
-            Ville.CreateVillesFromCsv("../../../Ressources/Distances.csv");
-            Salarie.GetFromFile("../../../Ressources/Employes.csv");
-            Client.GetFromFile("../../../Ressources/Clients.csv");
-            Vehicule.GetFromFile("../../../Ressources/Vehicules.csv");
-            Commande.GetFromFile("../../../Ressources/Commandes.csv");
 
-            Client c = Client.GetClientByUid(1);
-            while (true)
-            {
-                c.PromptCreateCommande();
-            }
 
-            Salarie.SaveToFile("../../../Ressources/TestEmployeesFile.csv");
-            Client.SaveToFile("../../../Ressources/TestClients.csv");
-            Commande.SaveToFile("../../../Ressources/TestCommandes.csv");
-            Vehicule.SaveToFile("../../../Ressources/TestVehicules.csv");
+            //Client c = Client.GetClientByUid(1);
+            //while (true)
+            //{
+            //    c.PromptCreateCommande();
+            //}
+
+
 
             Console.ReadLine();
 
@@ -58,6 +49,23 @@ namespace TransConnect_Console
             //Client.clients.ForEach(x => Console.WriteLine(x.Lastname));
             //Console.ReadLine();
 
+        }
+
+        public static void Initialize()
+        {
+            Ville.CreateVillesFromCsv("../../../Ressources/Distances.csv");
+            Salarie.GetFromFile("../../../Ressources/Employes.csv");
+            Client.GetFromFile("../../../Ressources/Clients.csv");
+            Vehicule.GetFromFile("../../../Ressources/Vehicules.csv");
+            Commande.GetFromFile("../../../Ressources/Commandes.csv");
+        }
+
+        public static void Save()
+        {
+            Salarie.SaveToFile("../../../Ressources/TestEmployeesFile.csv");
+            Client.SaveToFile("../../../Ressources/TestClients.csv");
+            Commande.SaveToFile("../../../Ressources/TestCommandes.csv");
+            Vehicule.SaveToFile("../../../Ressources/TestVehicules.csv");
         }
     }
 }

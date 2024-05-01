@@ -11,7 +11,7 @@ namespace TransConnect_Console
         private int kilometrage = 0;
         private string immat;
         private int uid;
-        private int uidCounter;
+        private static int uidCounter;
         
         public int Kilometrage
         {

@@ -1,6 +1,5 @@
 orderID, clientID, startCity, destinationCity, price, vehicleID, chauffeurID, date, description
 4,1,Avignon,Toulon,800,2,10,22/06/2024,N/A
-0,1,Paris,Lyon,0,2,12,16/08/2024,300 chats
 1,2,Paris,Bordeaux,2300,1,12,20/06/2024,Transport d'animaux sauvages
 3,2,La Rochelle,Pau,1500,5,13,20/06/2024,Transport de Fonds
 2,5,Rouen,Lyon,1300,5,12,21/06/2024,N/A
