@@ -214,5 +214,17 @@ namespace TransConnect_Console
             s += "\n| " + Email + "," + Telephone;
             return s;
         }
+
+        public string ToLongString()
+        {
+            string s = "-----------------------------------------------\nPrénom: " + Firstname;
+            s += "\nNom: " + Lastname;
+            s += "\nEmail: " + Email;
+            s += "\nTéléphone: " + Telephone;
+            s += "\nDate de naissance: " + Birthdate.ToShortDateString();
+            s += "\nAddresse: " + Address.StreetNumber + " " + address.StreetName + ", " + address.City.ToUpper();
+
+            return s;
+        }
     }
 }

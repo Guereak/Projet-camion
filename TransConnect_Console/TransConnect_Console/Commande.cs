@@ -24,6 +24,8 @@ namespace TransConnect_Console
 
         public Commande(Client client, Ville deliveryStartingPoint, Ville deliveryDestinationPoint, Vehicule vehicle, DateTime orderDate, Chauffeur chauffeur, string description)
         {
+            Console.WriteLine(vehicle);
+
             this.client = client;
             this.deliveryStartingPoint = deliveryStartingPoint;
             this.deliveryDestinationPoint = deliveryDestinationPoint;
@@ -32,8 +34,16 @@ namespace TransConnect_Console
             this.chauffeur = chauffeur;
             this.description = description;
 
-            //totalPrice = ComputeOrderPrice();
-            //chauffeur = Chauffeur.FindChauffeurForDate(orderDate);
+            //if(this.vehicle == null)
+            //{
+            //    Console.ForegroundColor = ConsoleColor.Red;
+            //    Console.WriteLine("ORDER WAS INITIALIZED WITHOUT A VEHICULE");
+            //    Console.WriteLine(orderDate.ToShortDateString() + " " + description);
+            //    Console.ReadLine();
+            //}
+
+            // TODO AHHH
+            // totalPrice = ComputeOrderPrice();
         }
 
 
@@ -44,7 +54,15 @@ namespace TransConnect_Console
 
         public override string ToString()
         {
-            return "Total Price : " + TotalPrice.ToString();
+            string s = "Ville de Départ: " + deliveryStartingPoint.ToString();
+            s += "\nVille d'arrivée: " + deliveryDestinationPoint.ToString();
+            s += "\nDate de la commande: " + orderDate.ToShortDateString();
+            s += "\nPrix TTC: " + TotalPrice.ToString();
+            s += "\nDescription: " + description;
+            s += "\nChauffeur: " + chauffeur.ToString();
+            s += "\nVéhicule: " + vehicle.ToString();
+
+            return s;
         }
 
         public static void GetFromFile(string path)
@@ -77,6 +95,7 @@ namespace TransConnect_Console
                 client.AddOrder(c);
                 //Assign the order to the chauffeur
                 (driver as Chauffeur).bookedOn.Add(orderDate);
+                vehicule.bookedOn.Add(orderDate);
             }
         }
 

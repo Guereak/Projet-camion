@@ -8,6 +8,7 @@ namespace TransConnect_Console
     abstract class Vehicule : ISaveable
     {
         public static ListeChainee<Vehicule> flotte = new ListeChainee<Vehicule>();
+        public ListeChainee<DateTime> bookedOn = new ListeChainee<DateTime>();
         private int kilometrage = 0;
         private string immat;
         private int uid;
@@ -35,7 +36,6 @@ namespace TransConnect_Console
             this.kilometrage = kilometrage;
             this.immat = immat;
             uidCounter++;
-
         }
 
         public static void AfficheVehicules()
@@ -53,7 +53,7 @@ namespace TransConnect_Console
 
         public static void SaveToFile(string path)
         {
-            String fileStr = "vehiculeID, immat, kilometrage, vehiculeType, specParam1, specParam2, specParam3";
+            String fileStr = "vehiculeID, immat, kilometrage, vehiculeType, specParam1, specParam2, specParam3\n";
 
             foreach(Vehicule v in flotte)
             {
@@ -120,6 +120,30 @@ namespace TransConnect_Console
             {
                 Console.WriteLine(v);
             }
+        }
+
+        public static ListeChainee<int> AfficherVehiculesDisponibles(DateTime d)
+        {
+            ListeChainee<int> dispoUids = new ListeChainee<int>();
+
+            foreach(Vehicule v in flotte)
+            {
+                bool isAvailable = true;
+
+                foreach (DateTime dt in v.bookedOn)
+                {
+                    if (dt.Year == d.Year && dt.Month == d.Month && dt.Day == d.Day)
+                        isAvailable = false;
+                }
+
+                if (isAvailable)
+                {
+                    Console.WriteLine(v);
+                    dispoUids.Add(v.Uid);
+                }
+            }
+
+            return dispoUids;
         }
 
         public static Vehicule GetVehiculeByUid(int uid)

@@ -153,19 +153,6 @@ namespace TransConnect_Console
             Console.Write("Description de la commande: ");
             string desc = Console.ReadLine();
 
-            Console.Clear();
-            Vehicule.AfficherFlotte();
-
-            Vehicule v = null;
-            
-            while(v == null)
-            {
-                Console.Write("Entrez l'ID du véhicule désiré: ");
-                v = Vehicule.GetVehiculeByUid(Int32.Parse(Console.ReadLine()));
-            }
-
-            Console.Clear();
-
             DateTime parsedDate;
             bool success;
 
@@ -174,6 +161,41 @@ namespace TransConnect_Console
                 Console.Write("Date (DD/MM/YYYY): ");
                 success = DateTime.TryParseExact(Console.ReadLine(), "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out parsedDate);
             } while (!success);
+
+            Console.Clear();
+            ListeChainee<int> availableVehicules = Vehicule.AfficherVehiculesDisponibles(parsedDate);
+
+            Vehicule v = null;
+            
+            while(v == null)
+            {
+                Console.Write("Entrez l'ID du véhicule désiré: ");
+                v = Vehicule.GetVehiculeByUid(Int32.Parse(Console.ReadLine()));
+
+                bool b = false;
+
+                foreach(int i in availableVehicules)
+                {
+                    //Console.WriteLine(v.Uid + "   " + i);
+                    //Console.ReadLine();
+
+                    if (v.Uid == i)
+                    {
+                        b = true;
+                        break;
+                    }
+
+                }
+                if (!b)
+                {
+                    v = null;
+                    Console.WriteLine("Ce véhicule est déja utilisé à cette date!");
+                    Console.ReadLine();
+                }
+            }
+
+            v.bookedOn.Add(parsedDate);
+            Console.Clear();
 
             ListeChainee<Salarie> drivers = Salarie.CEO.FindAll(x => x.Role == "Chauffeur" && (x as Chauffeur).CheckAvailability(parsedDate));
             int[] driverIds = new int[drivers.Count];
@@ -202,6 +224,7 @@ namespace TransConnect_Console
             }
             driver.AddOrderDate(parsedDate);
 
+            Console.WriteLine(driver);
 
             Commande c = new Commande(this, startCity, destCity, v, parsedDate, driver, desc);
             this.pastOrders.Add(c);

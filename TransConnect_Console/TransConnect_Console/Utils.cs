@@ -52,17 +52,5 @@ namespace TransConnect_Console
             }
 
         }
-
-        public static void TestMenu()
-        {
-            Dictionary<string, Action> dict = new Dictionary<string, Action> {
-                { "Option 1", () => Console.WriteLine("O1 selected;")},
-                { "Option 2", () => Console.WriteLine("O2 selected;")},
-                { "Option 3", () => Console.WriteLine("O3 selected;")},
-                { "Option 4", () => Console.WriteLine("O4 selected;")},
-            };
-
-            Menu(dict, "Choose your options:");
-        }
     }
 }

@@ -8,5 +8,13 @@ namespace TransConnect_Console.Modules
 {
     internal class ModuleSalarie
     {
+
+        public static void PromptLogin()
+        {
+            Console.Write("Email: ");
+            string email = Console.ReadLine();
+            Console.Write("Mot de passe: ");
+            string password = Console.ReadLine();
+        }
     }
 }

@@ -12,13 +12,21 @@ namespace TransConnect_Console.Modules
         public static void Menu(Client c)
         {
             Dictionary<string, Action> dict = new Dictionary<string, Action> { 
-                { "Passer commande", () => { } },
-                {"Voir mes commandes", () => { } },
-                {"Voir mes informations", () => { } }
+                {"Passer commande", c.PromptCreateCommande },
+                {"Voir mes commandes", () => c.pastOrders.ForEach(Console.WriteLine)},
+                {"Voir mes informations", () => Console.WriteLine(c.ToLongString())},
+                {"Se déconnecter", LoginMenu },
             };
 
             Utils.Menu(dict, "CLIENT: Séléctionnez une action:");
-        }
+
+            Program.Save();
+
+            //To loop indefinitely
+            Console.ReadKey();
+            Console.Clear();
+            Menu(c);
+;        }
 
         public static void LoginMenu()
         {

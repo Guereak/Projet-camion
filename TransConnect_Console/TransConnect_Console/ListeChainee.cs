@@ -99,6 +99,14 @@ namespace TransConnect_Console
             return newList;
         }
 
+        public void ForEach(Action<T> a)
+        {
+            foreach(T t in this)
+            {
+                a(t);
+            }
+        }
+
         public double Sum(Func<T, double> f)
         {
             double sum = 0;

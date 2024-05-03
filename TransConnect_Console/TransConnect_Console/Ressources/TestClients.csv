@@ -1,7 +1,0 @@
-clientID,firstname, lastname, DD/MM/YYYY, email, city, streetname, streetnumber, telephone, ssnumber
-1,Cédric,Grolet,16/09/1990,c.grolet@gmail.com,Paris,Boulevard Haussman,14,0628963212,185857473,CG123
-2,Lucas,Dampierre,19/01/1984,ldp@dampierre.co.uk,Avignon,Rue des cannettes,32,0777326584,143839426,LD456
-3,Marcel,Proust,23/11/1955,marcelp@hachette.com,La Rochelle,Rue d'Artois,226,0187268312,114783374,MP789
-4,Laetitia,Leblanc,21/05/2001,llb@gmail.com,Monaco,Rue de Paris,51,0734927321,238743719,LL012
-5,Jamy,Goumaud,07/11/1988,jamy.goumaud@gmail.com,Biarritz,Boulevard Garibaldi,15,0620872984,123874038,JG345
-6,Eric,Dampierre,11/11/2003,edp@gmail.co.uk,Paris,RueRUE,12,234232,232323,12RueRUE
