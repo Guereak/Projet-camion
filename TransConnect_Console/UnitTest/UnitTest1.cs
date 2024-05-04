@@ -56,5 +56,19 @@ namespace UnitTest
 
             Assert.AreEqual(newList.Count, 0);
         }
+
+        [TestMethod]
+        public void TestReverse()
+        {
+            ListeChainee<int> listeChainee = new ListeChainee<int> { 1, 2, 3, 4, 5 };
+
+            listeChainee.Reverse();
+
+            Assert.AreEqual(listeChainee[0], 5);
+            Assert.AreEqual(listeChainee[1], 4);
+            Assert.AreEqual(listeChainee[2], 3);
+            Assert.AreEqual(listeChainee[3], 2);
+            Assert.AreEqual(listeChainee[4], 1);
+        }
     }
 }

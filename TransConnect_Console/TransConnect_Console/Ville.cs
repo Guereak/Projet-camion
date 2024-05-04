@@ -8,7 +8,7 @@ namespace TransConnect_Console
     {
         int id;
         string name;
-        List<Edge> neighbours = new List<Edge>();
+        public List<Edge> neighbours = new List<Edge>();
 
         private static int idCounter = 0;
         public static Dictionary<string, int> VilleToId = new Dictionary<string, int>();
@@ -20,7 +20,7 @@ namespace TransConnect_Console
             id = idCounter++;
         }
 
-        struct Edge
+        public struct Edge
         {
             public Ville destination;
             public int distance;
@@ -89,17 +89,17 @@ namespace TransConnect_Console
             return $"id: {id}, name:{name}";
         }
 
-        public static void DisplayVilles()
-        {
-            foreach(Ville v in villes)
-            {
-                Console.WriteLine(v.name);
-                foreach (Edge e in v.neighbours)
-                {
-                    Console.WriteLine($"    {e.destination.name}, {e.timeInMinutes}, {e.distance}");
-                }
-            }
-        }
+        //public static void DisplayVilles()
+        //{
+        //    foreach(Ville v in villes)
+        //    {
+        //        Console.WriteLine(v.name);
+        //        foreach (Edge e in v.neighbours)
+        //        {
+        //            Console.WriteLine($"    {e.destination.name}, {e.timeInMinutes}, {e.distance}");
+        //        }
+        //    }
+        //}
 
 
         public static void AddToVilles(Ville v)
@@ -116,13 +116,14 @@ namespace TransConnect_Console
             villes = vs;
         }
 
-        public static void Dijkstra(Ville source, Ville target)
+
+        public static ListeChainee<Ville> Dijkstra(Ville source, Ville target)
         {
-            Dictionary<Ville, int> dist = new Dictionary<Ville,int>();
+            Dictionary<Ville, int> dist = new Dictionary<Ville, int>();
             Dictionary<Ville, Ville> prev = new Dictionary<Ville, Ville>();
             List<Ville> q = new List<Ville>();
 
-            for(int i = 0; i < villes.Length; i++)
+            for (int i = 0; i < villes.Length; i++)
             {
                 dist[villes[i]] = Int32.MaxValue;
                 q.Add(villes[i]);
@@ -130,26 +131,16 @@ namespace TransConnect_Console
 
             dist[source] = 0;
 
-            while(q.Count > 0)
+            while (q.Count > 0)
             {
                 Ville v = RemoveMinVille(q, dist);
-                
-                if(v == target)
-                {
-                    // Da ting is found, stop
-                    foreach(KeyValuePair<Ville, int> kvp in dist)
-                    {
-                        Console.WriteLine("FOUNDDD");
-                        Console.WriteLine(kvp.Key.ToString() + " DIST " + kvp.Value.ToString());
-                    }
-                }
-                
+
                 q.Remove(v);
 
-                foreach(Edge neighbour in v.neighbours)
+                foreach (Edge neighbour in v.neighbours)
                 {
                     int alt = dist[v] + neighbour.distance;
-                    if(alt < dist[neighbour.destination])
+                    if (alt < dist[neighbour.destination])
                     {
                         dist[neighbour.destination] = alt;
                         prev[neighbour.destination] = v;
@@ -157,6 +148,18 @@ namespace TransConnect_Console
                 }
             }
 
+            return GetPath(source, target, prev);
+        }
+
+        private static ListeChainee<Ville> GetPath(Ville source, Ville target, Dictionary<Ville, Ville> prev)
+        {
+            ListeChainee<Ville> path = new ListeChainee<Ville>();
+            for (Ville at = target; at != null; at = prev.ContainsKey(at) ? prev[at] : null)
+            {
+                path.Add(at);
+            }
+            path.Reverse();
+            return path;
         }
 
         public static Ville FindByName(string name)

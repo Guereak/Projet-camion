@@ -107,6 +107,22 @@ namespace TransConnect_Console
             }
         }
 
+        public void Reverse()
+        {
+            Node<T> current = tete;
+            Node<T> prev = null, next = null;
+
+            while(current != null)
+            {
+                next = current.next;
+                current.next = prev;
+                prev = current;
+                current = next;
+            }
+
+            tete = prev;
+        }
+
         public double Sum(Func<T, double> f)
         {
             double sum = 0;

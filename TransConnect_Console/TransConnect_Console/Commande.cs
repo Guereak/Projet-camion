@@ -15,11 +15,17 @@ namespace TransConnect_Console
         private DateTime orderDate;
         private int uid;
         private string description;
+        private string roadmap;
 
         public double TotalPrice
         {
             get { return totalPrice; }
             set { totalPrice = value; } // For test purposes only
+        }
+
+        public string Roadmap
+        {
+            get { return roadmap; }
         }
 
         public Commande(Client client, Ville deliveryStartingPoint, Ville deliveryDestinationPoint, Vehicule vehicle, DateTime orderDate, Chauffeur chauffeur, string description)
@@ -34,22 +40,35 @@ namespace TransConnect_Console
             this.chauffeur = chauffeur;
             this.description = description;
 
-            //if(this.vehicle == null)
-            //{
-            //    Console.ForegroundColor = ConsoleColor.Red;
-            //    Console.WriteLine("ORDER WAS INITIALIZED WITHOUT A VEHICULE");
-            //    Console.WriteLine(orderDate.ToShortDateString() + " " + description);
-            //    Console.ReadLine();
-            //}
-
-            // TODO AHHH
-            // totalPrice = ComputeOrderPrice();
+            totalPrice = ComputeOrderPrice();
         }
 
 
         public double ComputeOrderPrice()
         {
-            throw new NotImplementedException();
+            ListeChainee<Ville> roadmap = Ville.Dijkstra(deliveryStartingPoint, deliveryDestinationPoint);
+
+            int totalDistance = 0;
+            int totalTimeInMinutes = 0;
+
+            string roadmapString = "";
+
+            for (int i = 0; i < roadmap.Count - 1; i++)
+            {
+                foreach (Ville.Edge e in roadmap[i].neighbours)
+                {
+                    if(e.destination == roadmap[i + 1])
+                    {
+                        roadmapString += $"{roadmap[i].Name} -> {roadmap[i+1].Name} : {e.distance}km, {e.timeInMinutes / 60}h{e.timeInMinutes % 60}min\n";
+                        totalDistance += e.distance;
+                        totalTimeInMinutes += e.timeInMinutes;
+                    }
+                }
+            }
+
+            this.roadmap = roadmapString;
+
+            return Math.Ceiling(totalTimeInMinutes * 1.0 / 60) * chauffeur.HourlyRate;
         }
 
         public override string ToString()

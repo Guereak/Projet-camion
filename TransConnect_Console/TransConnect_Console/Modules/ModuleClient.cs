@@ -13,7 +13,7 @@ namespace TransConnect_Console.Modules
         {
             Dictionary<string, Action> dict = new Dictionary<string, Action> { 
                 {"Passer commande", c.PromptCreateCommande },
-                {"Voir mes commandes", () => c.pastOrders.ForEach(Console.WriteLine)},
+                {"Voir mes commandes", () => c.pastOrders.ForEach(c => {Console.WriteLine(c); Console.WriteLine(c.Roadmap); })},
                 {"Voir mes informations", () => Console.WriteLine(c.ToLongString())},
                 {"Se déconnecter", LoginMenu },
             };

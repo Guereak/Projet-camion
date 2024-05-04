@@ -13,10 +13,15 @@ namespace TransConnect_Console
         private double hourlyRate;
         public ListeChainee<DateTime> bookedOn;
 
+        public double HourlyRate
+        {
+            get { return hourlyRate; }
+        }
 
-        public Chauffeur(PersonneStruct personneStruct, string role, int salary) : base(personneStruct, role, salary)
+        public Chauffeur(PersonneStruct personneStruct, string role, int salary, double hourlyRate) : base(personneStruct, role, salary)
         {
             bookedOn = new ListeChainee<DateTime>();
+            this.hourlyRate = hourlyRate;
         }
 
         public bool CheckAvailability(DateTime date)
@@ -31,11 +36,6 @@ namespace TransConnect_Console
                     return false;
             }
             return true;
-        }
-
-        public static void FindChauffeurForDate(DateTime date)
-        {
-            throw new NotImplementedException();
         }
 
         public void AddOrderDate(DateTime date)

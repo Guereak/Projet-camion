@@ -13,6 +13,10 @@ namespace TransConnect_Console
         {
             Initialize();
 
+            //Ville.Dijkstra(Ville.FindByName("Paris"), Ville.FindByName("Monaco"));
+
+            Console.ReadLine();
+
             ModuleClient.LoginMenu();
 
             Console.ReadLine();

@@ -8,3 +8,5 @@ orderID, clientID, startCity, destinationCity, price, vehicleID, chauffeurID, da
 0,6,Avignon,Paris,0,2,12,16/08/2024,N/A
 0,6,Paris,Rouen,0,4,13,16/08/2024,N/A
 0,6,Monaco,Rouen,0,3,14,16/08/2024,Ouais
+0,6,Monaco,Toulon,0,5,10,16/08/2024,MT
+0,6,Paris,Toulouse,120,1,12,17/08/2024,

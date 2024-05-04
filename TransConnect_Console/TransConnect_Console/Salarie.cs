@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 
 namespace TransConnect_Console
@@ -50,10 +51,6 @@ namespace TransConnect_Console
             uidCounter++;
             uid = uidCounter;
         }
-
-        // Blank constructor. Only for test purposes
-        public Salarie() { }
-
 
         public void AddManagee(Salarie s)
         {
@@ -166,7 +163,7 @@ namespace TransConnect_Console
                 Salarie s;
                 if (data[11] == "Chauffeur")
                 {
-                    s = new Chauffeur(p, data[11], int.Parse(data[12]));
+                    s = new Chauffeur(p, data[11], int.Parse(data[12]), Double.Parse(data[14], CultureInfo.InvariantCulture));
                 }
                 else
                 {
@@ -195,7 +192,7 @@ namespace TransConnect_Console
 
         public static void SaveToFile(string path)
         {
-            string fullFileContent = "id,managerid,firstname,lastname,email,phone,social_security_number,birthdate,city,streetNum,streetName,role,salary,dateJoined\n";
+            string fullFileContent = "id,managerid,firstname,lastname,email,phone,social_security_number,birthdate,city,streetNum,streetName,role,salary,dateJoined,hourlyRate\n";
             fullFileContent += NextGuyToString(CEO);
 
             File.WriteAllText(path, fullFileContent);
@@ -206,6 +203,11 @@ namespace TransConnect_Console
             if (s == null)
                 return "";
 
+            double hourlyRate = 0.0;
+
+            if (s is Chauffeur)
+                hourlyRate = (s as Chauffeur).HourlyRate;
+
             string managerUid;
             if (s.manager == null) 
                 managerUid = "";
@@ -213,7 +215,7 @@ namespace TransConnect_Console
                 managerUid = s.manager.Uid.ToString();
 
             string fileContent = $"{s.Uid},{managerUid},{s.Firstname},{s.Lastname},{s.Email},{s.Telephone},{s.SsNumber},{s.Birthdate.ToShortDateString()}," +
-                $"{s.Address.City},{s.Address.StreetNumber},{s.Address.StreetName},{s.Role},{s.Salary},{s.dateJoined.ToShortDateString()}\n";
+                $"{s.Address.City},{s.Address.StreetNumber},{s.Address.StreetName},{s.Role},{s.Salary},{s.dateJoined.ToShortDateString()},{hourlyRate}\n";
             fileContent += NextGuyToString(s.nextColleague);
             fileContent += NextGuyToString(s.managees);
             return fileContent;
