@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Globalization;
 using System.IO;
 
@@ -226,9 +227,14 @@ namespace TransConnect_Console
             return base.ToString() + "\n| ID=" + uid + ", " + role;
         }
 
+        public new string ToString(string indent)
+        {
+            return base.ToString(indent) + $"\n{indent}| ID={Uid}, {Role}";
+        }
+
         public static void PrintFullCompanyTree(Salarie s, string indent="")
         {
-            Console.WriteLine(indent + s.ToString());
+            Console.WriteLine(s.ToString(indent));
             if(s.managees != null)
             {
                 PrintFullCompanyTree(s.managees, indent + "    ");

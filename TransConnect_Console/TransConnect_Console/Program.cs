@@ -13,8 +13,7 @@ namespace TransConnect_Console
         {
             Initialize();
 
-            //Ville.Dijkstra(Ville.FindByName("Paris"), Ville.FindByName("Monaco"));
-
+            Salarie.PrintFullCompanyTree(Salarie.CEO);
             Console.ReadLine();
 
             ModuleClient.LoginMenu();
