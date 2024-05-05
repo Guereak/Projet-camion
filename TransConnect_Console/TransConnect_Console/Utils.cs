@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TransConnect_Console
 {
@@ -19,7 +17,7 @@ namespace TransConnect_Console
                 int index = 0;
                 Console.Clear();
 
-                Console.WriteLine(hdrText);
+                Console.WriteLine("----- " + hdrText + " -----");
 
                 foreach (KeyValuePair<string, Action> kvp in dict)
                 {
@@ -30,6 +28,7 @@ namespace TransConnect_Console
                     }
                     else
                         Console.WriteLine(kvp.Key);
+
                     Console.ForegroundColor = ConsoleColor.White;
                     index++;
                 }

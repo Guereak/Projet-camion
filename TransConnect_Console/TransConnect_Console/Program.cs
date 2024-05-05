@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TransConnect_Console.Modules;
 
 namespace TransConnect_Console
@@ -13,10 +9,12 @@ namespace TransConnect_Console
         {
             Initialize();
 
-            Salarie.PrintFullCompanyTree(Salarie.CEO);
-            Console.ReadLine();
+            ModuleSalarie.Menu();
 
-            ModuleClient.LoginMenu();
+            //Salarie.PrintFullCompanyTree(Salarie.CEO);
+            //Console.ReadLine();
+
+            //ModuleClient.LoginMenu();
 
             Console.ReadLine();
         }

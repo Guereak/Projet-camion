@@ -137,6 +137,25 @@ namespace TransConnect_Console
             return GetSalarieRecursive(s.managees, id);
         }
 
+        public void FireSalarieRec(Salarie s)
+        {
+            Salarie sal = s.manager.managees;
+
+            if (sal.Uid == s.Uid)
+            {
+                s.manager.managees = sal.nextColleague;
+            }
+            else
+            {
+                while (sal.nextColleague.Uid != s.Uid)
+                {
+                    sal = sal.nextColleague;
+                }
+
+                sal.nextColleague = s.nextColleague;
+            }
+        }
+
         public static void GetFromFile(string path)
         {
             string[] employeeData = File.ReadAllLines(path);
@@ -237,7 +256,7 @@ namespace TransConnect_Console
             Console.WriteLine(s.ToString(indent));
             if(s.managees != null)
             {
-                PrintFullCompanyTree(s.managees, indent + "    ");
+                PrintFullCompanyTree(s.managees, indent + "     ");
             }
             if(s.nextColleague != null)
             {

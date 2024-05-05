@@ -217,7 +217,7 @@ namespace TransConnect_Console
 
         public string ToString(string indent)
         {
-            string s = indent + "| " + Lastname.ToUpper() + " " + Firstname + ", " + Address.StreetNumber + " " + address.StreetName + ", " + address.City.ToUpper();
+            string s = indent + "+ " + Lastname.ToUpper() + " " + Firstname + ", " + Address.StreetNumber + " " + address.StreetName + ", " + address.City.ToUpper();
             s += $"\n{indent}| " + Email + "," + Telephone;
 
             return s;
