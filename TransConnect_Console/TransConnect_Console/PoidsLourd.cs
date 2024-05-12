@@ -20,5 +20,22 @@ namespace TransConnect_Console
         {
             this.produitTransporte = produitTransporte;
         }
+
+        public struct PoidsLourdStruct
+        {
+            public int Kilometrage;
+            public string Immat;
+            public string ProduitTransporte;
+        }
+
+        public static new PoidsLourdStruct PromptCreate()
+        {
+            VehiculeStruct v = Vehicule.PromptCreate();
+
+            Console.Write("Produit transporté: ");
+            string pTransporte = Console.ReadLine();
+
+            return new PoidsLourdStruct { Kilometrage = v.Kilometrage, Immat = v.Immat, ProduitTransporte = pTransporte };
+        }
     }
 }

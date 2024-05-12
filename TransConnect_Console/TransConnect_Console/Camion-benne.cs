@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static TransConnect_Console.Camion_citerne;
 
 namespace TransConnect_Console
 {
@@ -32,6 +27,30 @@ namespace TransConnect_Console
         public override string ToString()
         {
             return "Camion benne : " + base.ToString();
+        }
+
+        public static new Camion_benne PromptCreate()
+        {
+            PoidsLourdStruct p = PoidsLourd.PromptCreate();
+
+            bool success = false;
+            int nbBennes;
+
+            do
+            {
+                Console.Write("Nombre de bennes: ");
+                success = Int32.TryParse(Console.ReadLine(), out nbBennes);
+            } while (!success);
+
+            Console.Write("Le camion possède t-il une grue? (O/N): ");
+            string s = Console.ReadLine();
+
+            bool hasGrue = false;
+
+            if (s.Trim().ToUpper() == "O")
+                hasGrue = true;
+
+            return new Camion_benne(p.Kilometrage, p.Immat, p.ProduitTransporte, nbBennes, hasGrue);
         }
     }
 }

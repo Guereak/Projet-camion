@@ -138,6 +138,26 @@ namespace TransConnect_Console
         }
 
 
+        public void Sort(Comparison<T> comparison)
+        {
+            bool swapped;
+            do
+            {
+                swapped = false;
+                Node<T> current = tete;
+                while (current != null && current.next != null)
+                {
+                    if (comparison(current.value, current.next.value) > 0)
+                    {
+                        T temp = current.value;
+                        current.value = current.next.value;
+                        current.next.value = temp;
+                        swapped = true;
+                    }
+                    current = current.next;
+                }
+            } while (swapped);
+        }
 
         private class LCEnumerator : IEnumerator
         {

@@ -45,5 +45,24 @@ namespace TransConnect_Console
 
             return CuveType.CuveClassique;
         }
+
+        public static new Camion_citerne PromptCreate()
+        {
+            PoidsLourdStruct p = PoidsLourd.PromptCreate();
+
+            CuveType typeCuve = CuveType.CuveClassique;
+
+            Dictionary<string, Action> cuveMenu = new Dictionary<string, Action>
+            {
+                {"Cuve Industrielle" , () => typeCuve = CuveType.CuveIndustrielle },
+                {"Cuve Agricole" , () => typeCuve = CuveType.CuveAgricole },
+                {"Cuve Produits Corrosifs" , () => typeCuve = CuveType.CuveProduitsCorrosifs},
+                {"Cuve Classique" , () => typeCuve = CuveType.CuveClassique }
+            };
+
+            Utils.Menu(cuveMenu, "Sélétionnez le type de cuve: ");
+
+            return new Camion_citerne(p.Kilometrage, p.Immat, p.ProduitTransporte, typeCuve);
+        }
     }
 }

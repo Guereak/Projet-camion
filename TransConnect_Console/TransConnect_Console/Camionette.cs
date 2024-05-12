@@ -35,5 +35,19 @@ namespace TransConnect_Console
         {
             return "Camionette : " + base.ToString();
         }
+
+        public static new Camionette PromptCreate()
+        {
+            VehiculeStruct v = Vehicule.PromptCreate();
+
+            Console.Write("Produit transporté: ");
+            string pTransporte = Console.ReadLine();
+
+            Console.Write("Usage: ");
+            string usage = Console.ReadLine();
+
+
+            return new Camionette(v.Kilometrage, v.Immat, usage, pTransporte);
+        }
     }
 }

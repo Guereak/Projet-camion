@@ -26,5 +26,21 @@ namespace TransConnect_Console
         {
             return "Camion frigorifique : " + base.ToString();
         }
+
+        public static new Camion_frigorifique PromptCreate()
+        {
+            PoidsLourdStruct p = PoidsLourd.PromptCreate();
+
+            bool success = false;
+            int nbGrps;
+
+            do
+            {
+                Console.Write("Nombre de groupes éléctrogènes: ");
+                success = Int32.TryParse(Console.ReadLine(), out nbGrps);
+            } while (!success);
+
+            return new Camion_frigorifique(p.Kilometrage, p.Immat, p.ProduitTransporte, nbGrps);
+        }
     }
 }

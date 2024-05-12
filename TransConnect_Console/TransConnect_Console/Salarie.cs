@@ -94,20 +94,20 @@ namespace TransConnect_Console
 
             } while (!success);
 
-            success = false;
-            int managerId;
-            do
-            {
-                Console.WriteLine("(int) ManagerID: ");
-                string num = Console.ReadLine().Trim();
-                success = Int32.TryParse(num, out managerId);
-            } while (!success);
+            //success = false;
+            //int managerId;
+            //do
+            //{
+            //    Console.WriteLine("(int) ManagerID: ");
+            //    string num = Console.ReadLine().Trim();
+            //    success = Int32.TryParse(num, out managerId);
+            //} while (!success);
 
             Salarie s = new Salarie(p, role, salaire);
-            Salarie manager = GetSalarieByUid(managerId);
             s.dateJoined = DateTime.Now;
-            manager.managees = s;
-            s.manager = manager;
+            //Salarie manager = GetSalarieByUid(managerId);
+            //manager.managees = s;
+            //s.manager = manager;
 
             return s;
         }
@@ -137,7 +137,7 @@ namespace TransConnect_Console
             return GetSalarieRecursive(s.managees, id);
         }
 
-        public void FireSalarieRec(Salarie s)
+        public static void FireWithTeam(Salarie s)
         {
             Salarie sal = s.manager.managees;
 
@@ -154,6 +154,35 @@ namespace TransConnect_Console
 
                 sal.nextColleague = s.nextColleague;
             }
+        }
+
+        public void FireAndReplaceBy(Salarie newSalarie)
+        {
+            Salarie sal = manager.managees;
+
+            if(sal.Uid == Uid)
+            {
+                Salarie nextColleague = sal.nextColleague;
+                Salarie managees = sal.managees;
+
+                manager.managees = newSalarie;
+                newSalarie.nextColleague = nextColleague;
+                newSalarie.managees = managees;
+            }
+            else
+            {
+                while (sal.nextColleague.Uid != Uid)
+                {
+                    sal = sal.nextColleague;
+                }
+
+                sal.nextColleague = newSalarie;
+                Salarie nextColleague = sal.nextColleague.nextColleague;
+                Salarie managees = sal.nextColleague.managees;
+                newSalarie.nextColleague = nextColleague;
+                newSalarie.managees = managees;
+            }
+
         }
 
         public static void GetFromFile(string path)

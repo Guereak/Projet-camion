@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Common;
+using System.Diagnostics;
 using System.IO;
 
 
@@ -29,6 +30,12 @@ namespace TransConnect_Console
         public int Uid
         {
             get { return uid; }
+        }
+
+        public struct VehiculeStruct
+        {
+            public string Immat;
+            public int Kilometrage;
         }
 
         protected Vehicule(int kilometrage, string immat)
@@ -114,13 +121,13 @@ namespace TransConnect_Console
             }
         }
 
-        public static void AfficherFlotte()
-        {
-            foreach(Vehicule v in flotte)
-            {
-                Console.WriteLine(v);
-            }
-        }
+        //public static void AfficherFlotte()
+        //{
+        //    foreach(Vehicule v in flotte)
+        //    {
+        //        Console.WriteLine(v);
+        //    }
+        //}
 
         public static ListeChainee<int> AfficherVehiculesDisponibles(DateTime d)
         {
@@ -153,6 +160,24 @@ namespace TransConnect_Console
                 if(v.uid == uid) return v;
             }
             return null;
+        }
+
+        public static VehiculeStruct PromptCreate()
+        {
+            Console.Write("Immatriculation du véhicule: ");
+            
+            string immat = Console.ReadLine();
+
+            bool success = false;
+            int kilometrage = 0;
+
+            do
+            {
+                Console.Write("Kilométrage du véhicule (zéro si neuf): ");
+                success = Int32.TryParse(Console.ReadLine(), out kilometrage);
+            } while (success == false);
+
+            return new VehiculeStruct { Immat = immat, Kilometrage = kilometrage};
         }
     }
 }

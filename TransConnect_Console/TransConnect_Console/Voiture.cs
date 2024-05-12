@@ -25,5 +25,21 @@ namespace TransConnect_Console
         {
             return "Voiture : " + base.ToString();
         }
+
+        public static new Voiture PromptCreate()
+        {
+            VehiculeStruct v = Vehicule.PromptCreate();
+
+            bool success = false;
+            int nbPassagers;
+
+            do
+            {
+                Console.Write("Nombre de passagers maximum dans le véhicule: ");
+                success = Int32.TryParse(Console.ReadLine(), out nbPassagers);
+            } while (!success);
+
+            return new Voiture(v.Kilometrage, v.Immat, nbPassagers);
+        }
     }
 }

@@ -60,10 +60,10 @@ namespace TransConnect_Console
         public override string ToString()
         {
             string s =  base.ToString();
-            foreach(Commande order in pastOrders)
-            {
-                s += "  " + order.ToString();
-            }
+            //foreach(Commande order in pastOrders)
+            //{
+            //    s += "  " + order.ToString();
+            //}
 
             return s;
         }
