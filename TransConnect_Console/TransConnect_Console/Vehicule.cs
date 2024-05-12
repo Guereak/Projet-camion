@@ -43,13 +43,14 @@ namespace TransConnect_Console
             this.kilometrage = kilometrage;
             this.immat = immat;
             uidCounter++;
+            uid = uidCounter;
         }
 
         public static void AfficheVehicules()
         {
             for(int i = 0; i < flotte.Count; i++)
             {
-                Console.WriteLine($"{i}: " + flotte[i].ToString());
+                Console.WriteLine($"{flotte[i].Uid}: " + flotte[i].ToString());
             }
         }
 
@@ -60,7 +61,7 @@ namespace TransConnect_Console
 
         public static void SaveToFile(string path)
         {
-            String fileStr = "vehiculeID, immat, kilometrage, vehiculeType, specParam1, specParam2, specParam3\n";
+            string fileStr = "vehiculeID, immat, kilometrage, vehiculeType, specParam1, specParam2, specParam3\n";
 
             foreach(Vehicule v in flotte)
             {
@@ -178,6 +179,22 @@ namespace TransConnect_Console
             } while (success == false);
 
             return new VehiculeStruct { Immat = immat, Kilometrage = kilometrage};
+        }
+
+        public void RemoveFromFlotte()
+        {
+            int index = 0;
+
+            for(int i = 0; i < flotte.Count; i++)
+            {
+                if (flotte[i].Uid == Uid)
+                {
+                    index = i;
+                    break;
+                }
+            }
+
+            flotte.RemoveAt(index);
         }
     }
 }

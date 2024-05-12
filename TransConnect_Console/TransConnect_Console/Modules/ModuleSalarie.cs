@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TransConnect_Console.Modules
 {
@@ -25,11 +20,11 @@ namespace TransConnect_Console.Modules
             Dictionary<string, Action> employeeActions = new Dictionary<string, Action>
             {
                 {"Licensier un employé (avec son équipe)" , FireTeam },
-                {"Licenser un employé (remplacer par un nouveau)" , FireAndReplaceByNew },      // TODO FIX
-                {"Licenser un employé (remplacer par employé actuel)" , () => { } },
+                {"Licensier un employé (remplacer par un nouveau)" , FireAndReplaceByNew },      // TODO FIX
+                {"Licensier un employé (remplacer par employé actuel)" , () => { } },
                 {"Embaucher un nouvel employé" , () => { } },
                 {"Ajouter un véhicule" , PromptCreateVehicule },
-                {"Retirer un véhicule" , () => { } },
+                {"Retirer un véhicule" , RemoveVehicule },
                 {"Liste des clients" , MenuAfficherClients },       // TODO FIX
                 {"Afficher l'organigramme de la société" , () => {Salarie.PrintFullCompanyTree(Salarie.CEO); Console.ReadLine(); } },
                 {"Afficher la flotte de véhicules" , () => { Vehicule.AfficheVehicules(); Console.ReadLine(); } },
@@ -133,8 +128,32 @@ namespace TransConnect_Console.Modules
             };
 
             Utils.Menu(vehiculeMenu, "EMPLOYÉ: Choisissez le type de véhicule à créer");
-
+            
             Vehicule.flotte.Add(v);
+        }
+
+        public static void RemoveVehicule()
+        {
+            Vehicule.AfficheVehicules();
+
+            int driverId;
+            bool success = false;
+
+            Vehicule v = null;
+            while (v == null)
+            {
+                do
+                {
+                    Console.WriteLine("(int) ID du véhicule: ");
+                    string num = Console.ReadLine().Trim();
+                    success = Int32.TryParse(num, out driverId);
+
+                } while (!success);
+
+                v = Vehicule.GetVehiculeByUid(driverId);
+            }
+
+            v.RemoveFromFlotte();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -81,6 +82,29 @@ namespace TransConnect_Console
             }
 
             ret.next = new Node<T>(val);  
+
+        }
+
+        public void RemoveAt(int index)
+        {
+            if (index > Count)
+                throw new IndexOutOfRangeException();
+
+            if (index == 0)
+            {
+                tete = tete.next;
+            }
+            else
+            {
+                Node<T> current = tete;
+
+                for (int i = 0; i < index - 1; i++)
+                {
+                    current = current.next;
+                }
+
+                current.next = current.next.next;
+            }
 
         }
 

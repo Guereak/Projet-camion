@@ -70,5 +70,41 @@ namespace UnitTest
             Assert.AreEqual(listeChainee[3], 2);
             Assert.AreEqual(listeChainee[4], 1);
         }
+
+        [TestMethod]
+        public void TestRemoveAt1()
+        {
+            ListeChainee<int> listeChainee = new ListeChainee<int> { 1, 2, 3, 4, 5 };
+            listeChainee.RemoveAt(3);
+
+            Assert.AreEqual(listeChainee[0], 1);
+            Assert.AreEqual(listeChainee[1], 2);
+            Assert.AreEqual(listeChainee[2], 3);
+            Assert.AreEqual(listeChainee[3], 5);
+        }
+
+        [TestMethod]
+        public void TestRemoveAt2()
+        {
+            ListeChainee<int> listeChainee = new ListeChainee<int> { 1, 2, 3, 4, 5 };
+            listeChainee.RemoveAt(0);
+
+            Assert.AreEqual(listeChainee[0], 2);
+            Assert.AreEqual(listeChainee[1], 3);
+            Assert.AreEqual(listeChainee[2], 4);
+            Assert.AreEqual(listeChainee[3], 5);
+        }
+
+        [TestMethod]
+        public void TestRemoveAt3()
+        {
+            ListeChainee<int> listeChainee = new ListeChainee<int> { 1, 2, 3, 4, 5 };
+            listeChainee.RemoveAt(4);
+
+            Assert.AreEqual(listeChainee[0], 1);
+            Assert.AreEqual(listeChainee[1], 2);
+            Assert.AreEqual(listeChainee[2], 3);
+            Assert.AreEqual(listeChainee[3], 4);
+        }
     }
 }
