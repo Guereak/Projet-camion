@@ -16,6 +16,8 @@ namespace TransConnect_Console
         // editable
         private string role;
         private int salary;
+        private bool isAdmin;
+        private string password;
 
         public int Uid
         {
@@ -94,22 +96,33 @@ namespace TransConnect_Console
 
             } while (!success);
 
-            //success = false;
-            //int managerId;
-            //do
-            //{
-            //    Console.WriteLine("(int) ManagerID: ");
-            //    string num = Console.ReadLine().Trim();
-            //    success = Int32.TryParse(num, out managerId);
-            //} while (!success);
-
             Salarie s = new Salarie(p, role, salaire);
             s.dateJoined = DateTime.Now;
-            //Salarie manager = GetSalarieByUid(managerId);
-            //manager.managees = s;
-            //s.manager = manager;
 
             return s;
+        }
+
+        public static void PromptCreateWithManager() 
+        {
+            Salarie s = PromptCreate();
+
+
+            bool success = false;
+            int managerId;
+
+            PrintFullCompanyTree(CEO);
+
+            do
+            {
+                Console.WriteLine("(int) ManagerID: ");
+                string num = Console.ReadLine().Trim();
+                success = Int32.TryParse(num, out managerId);
+            } while (!success);
+
+            Salarie manager = GetSalarieByUid(managerId);
+            s.nextColleague = manager.managees;
+            manager.managees = s;
+            s.manager = manager;
         }
 
         public static Salarie GetSalarieByUid(int id)
@@ -224,6 +237,9 @@ namespace TransConnect_Console
                 string[] dateJoined = data[13].Split('/');
                 s.dateJoined = new DateTime(Int32.Parse(dateJoined[2]), Int32.Parse(dateJoined[1]), Int32.Parse(dateJoined[0]));
 
+                s.isAdmin = data[15] == "true";
+                s.password = data[16];
+
                 // Handle managerial stuff - should probably be condensed into a method
                 if (data[1] == "")
                 {
@@ -241,7 +257,7 @@ namespace TransConnect_Console
 
         public static void SaveToFile(string path)
         {
-            string fullFileContent = "id,managerid,firstname,lastname,email,phone,social_security_number,birthdate,city,streetNum,streetName,role,salary,dateJoined,hourlyRate\n";
+            string fullFileContent = "id,managerid,firstname,lastname,email,phone,social_security_number,birthdate,city,streetNum,streetName,role,salary,dateJoined,hourlyRate,isAdmin,password\n";
             fullFileContent += NextGuyToString(CEO);
 
             File.WriteAllText(path, fullFileContent);
@@ -263,8 +279,10 @@ namespace TransConnect_Console
             else 
                 managerUid = s.manager.Uid.ToString();
 
+            string isAdminStr = s.isAdmin ? "true" : "false";
+
             string fileContent = $"{s.Uid},{managerUid},{s.Firstname},{s.Lastname},{s.Email},{s.Telephone},{s.SsNumber},{s.Birthdate.ToShortDateString()}," +
-                $"{s.Address.City},{s.Address.StreetNumber},{s.Address.StreetName},{s.Role},{s.Salary},{s.dateJoined.ToShortDateString()},{hourlyRate}\n";
+                $"{s.Address.City},{s.Address.StreetNumber},{s.Address.StreetName},{s.Role},{s.Salary},{s.dateJoined.ToShortDateString()},{hourlyRate},{isAdminStr},{s.password}\n";
             fileContent += NextGuyToString(s.nextColleague);
             fileContent += NextGuyToString(s.managees);
             return fileContent;
@@ -310,6 +328,39 @@ namespace TransConnect_Console
 
             FindAllRec(pred, current.nextColleague, found);
             FindAllRec(pred, current.managees, found);
+        }
+
+        public static Salarie Login(string email, string password)
+        {
+            Salarie withEmail = CEO.Find(x => x.Email == email);
+
+            if (withEmail == null) return null;
+
+            if (withEmail.password == password)
+                return withEmail;
+
+            return null;
+        }
+
+        public Salarie Find(Predicate<Salarie> match)
+        {
+            if (match(this))
+            {
+                return this;
+            }
+
+            Salarie s1 = null;
+            Salarie s2 = null;
+
+            if (nextColleague != null)
+                s1 = nextColleague.Find(match);
+            if(managees != null)
+                s2 = managees.Find(match);
+
+            if (s1 == null)
+                return s2;
+
+            return s1;
         }
     }
 }

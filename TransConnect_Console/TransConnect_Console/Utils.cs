@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace TransConnect_Console
 {
-    internal class Utils
+    class Utils
     {
         public static void Menu(IDictionary<string, Action> dict, string hdrText, ConsoleColor selectedColor = ConsoleColor.Yellow)
         {

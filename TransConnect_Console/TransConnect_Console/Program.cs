@@ -9,12 +9,12 @@ namespace TransConnect_Console
         {
             Initialize();
 
-            ModuleSalarie.Menu();
+            ModuleSalarie.LoginMenu();
+            //ModuleClient.LoginMenu();
 
             //Salarie.PrintFullCompanyTree(Salarie.CEO);
             //Console.ReadLine();
 
-            //ModuleClient.LoginMenu();
 
             Console.ReadLine();
         }

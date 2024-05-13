@@ -1,28 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace TransConnect_Console.Modules
 {
     internal class ModuleSalarie
     {
 
-        public static void PromptLogin()
+        public static void LoginMenu()
         {
             Console.Write("Email: ");
             string email = Console.ReadLine();
             Console.Write("Mot de passe: ");
             string password = Console.ReadLine();
+
+            Salarie s = Salarie.Login(email, password);
+            if (s == null)
+            {
+                Console.WriteLine("Invalid email or password");
+                Thread.Sleep(1000);
+                LoginMenu();
+            }
+            else
+            {
+                Menu(s);
+            }
         }
 
-        public static void Menu(/*Salarie s*/)
+        public static void Menu(Salarie s)
         {
 
             Dictionary<string, Action> employeeActions = new Dictionary<string, Action>
             {
                 {"Licensier un employé (avec son équipe)" , FireTeam },
                 {"Licensier un employé (remplacer par un nouveau)" , FireAndReplaceByNew },      // TODO FIX
-                {"Licensier un employé (remplacer par employé actuel)" , () => { } },
-                {"Embaucher un nouvel employé" , () => { } },
+                {"Licensier un employé (remplacer par employé actuel)" , () => { } },       // TODO
+                {"Embaucher un nouvel employé" , Salarie.PromptCreateWithManager },
                 {"Ajouter un véhicule" , PromptCreateVehicule },
                 {"Retirer un véhicule" , RemoveVehicule },
                 {"Liste des clients" , MenuAfficherClients },       // TODO FIX
@@ -33,7 +46,7 @@ namespace TransConnect_Console.Modules
 
             Utils.Menu(employeeActions, "EMPLOYÉ: Sélectionnez une action");
 
-            Menu();
+            Menu(s);
         }
 
         public static void MenuStatistiques()
