@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.IO;
 
 namespace TransConnect_Console
@@ -20,7 +19,7 @@ namespace TransConnect_Console
         public double TotalPrice
         {
             get { return totalPrice; }
-            set { totalPrice = value; } // For test purposes only
+            set { totalPrice = value; }
         }
 
         public string Roadmap
@@ -44,6 +43,23 @@ namespace TransConnect_Console
         }
 
 
+        public override string ToString()
+        {
+            string s = "Ville de Départ: " + deliveryStartingPoint.ToString();
+            s += "\nVille d'arrivée: " + deliveryDestinationPoint.ToString();
+            s += "\nDate de la commande: " + orderDate.ToShortDateString();
+            s += "\nPrix TTC: " + TotalPrice.ToString();
+            s += "\nDescription: " + description;
+            s += "\nChauffeur: " + chauffeur.ToString();
+            s += "\nVéhicule: " + vehicle.ToString();
+
+            return s;
+        }
+
+
+        /// <summary>
+        /// Calcule le prix de la commande entre deliveryStartingPoint et deliveryDestinationPoint
+        /// </summary>
         public double ComputeOrderPrice()
         {
             ListeChainee<Ville> roadmap = Ville.Dijkstra(deliveryStartingPoint, deliveryDestinationPoint);
@@ -55,7 +71,7 @@ namespace TransConnect_Console
 
             for (int i = 0; i < roadmap.Count - 1; i++)
             {
-                foreach (Ville.Edge e in roadmap[i].neighbours)
+                foreach (Ville.Edge e in roadmap[i].Neighbours)
                 {
                     if(e.destination == roadmap[i + 1])
                     {
@@ -71,19 +87,8 @@ namespace TransConnect_Console
             return Math.Ceiling(totalTimeInMinutes * 1.0 / 60) * chauffeur.HourlyRate;
         }
 
-        public override string ToString()
-        {
-            string s = "Ville de Départ: " + deliveryStartingPoint.ToString();
-            s += "\nVille d'arrivée: " + deliveryDestinationPoint.ToString();
-            s += "\nDate de la commande: " + orderDate.ToShortDateString();
-            s += "\nPrix TTC: " + TotalPrice.ToString();
-            s += "\nDescription: " + description;
-            s += "\nChauffeur: " + chauffeur.ToString();
-            s += "\nVéhicule: " + vehicle.ToString();
 
-            return s;
-        }
-
+        #region ISaveable
         public static void GetFromFile(string path)
         {
             string[] orderData = File.ReadAllLines(path);
@@ -132,5 +137,6 @@ namespace TransConnect_Console
 
             File.WriteAllText(path, s); 
         }
+        #endregion
     }
 }

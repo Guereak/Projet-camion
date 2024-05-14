@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom.Compiler;
 using System.Globalization;
 using System.IO;
 
@@ -8,30 +7,24 @@ namespace TransConnect_Console
     class Salarie : Personne, ISaveable
     {
         private static int uidCounter = 0;
+        public static Salarie CEO;
 
-        // non-editable
         private DateTime dateJoined;
         private int uid;
 
-        // editable
         private string role;
         private int salary;
         private bool isAdmin;
         private string password;
 
-        public int Uid
-        {
-            get { return uid; }
-        }
-
-        // n-ary tree properties
-        public static Salarie CEO;
-
+        // Propriétés de l'arbre n-aire
         public Salarie manager;
         public Salarie managees;
         public Salarie nextColleague;
 
-        #region editableProperties
+        public int Uid { get { return uid; } }
+
+        public bool IsAdmin { get { return isAdmin; } }
 
         public string Role
         {
@@ -45,8 +38,6 @@ namespace TransConnect_Console
             set { salary = value; }
         }
 
-        #endregion
-
         public Salarie(PersonneStruct personneStruct, string role, int salary) : base(personneStruct)
         {
             this.role = role;
@@ -55,6 +46,39 @@ namespace TransConnect_Console
             uid = uidCounter;
         }
 
+        public override string ToString()
+        {
+            return base.ToString() + "\n| ID=" + uid + ", " + role;
+        }
+
+        public new string ToString(string indent)
+        {
+            return base.ToString(indent) + $"\n{indent}| ID={Uid}, {Role}";
+        }
+
+
+        /// <summary>
+        /// Affiche tout l'arbre des employés dans la console
+        /// </summary>
+        /// <param name="s">PDG de l'organisation</param>
+        public static void PrintFullCompanyTree(Salarie s, string indent = "")
+        {
+            Console.WriteLine(s.ToString(indent));
+            if (s.managees != null)
+            {
+                PrintFullCompanyTree(s.managees, indent + "     ");
+            }
+            if (s.nextColleague != null)
+            {
+                PrintFullCompanyTree(s.nextColleague, indent);
+            }
+        }
+
+
+        /// <summary>
+        /// Ajoute un subordoné à la fin de la liste des subordonnés d'un salarié
+        /// </summary>
+        /// <param name="s">Salarié auquel ajouter le subordonné</param>
         public void AddManagee(Salarie s)
         {
             s.manager = this;
@@ -76,8 +100,8 @@ namespace TransConnect_Console
 
 
         /// <summary>
-        /// Create a Salarie using the console.
-        /// Prompts for attributes and returns a 'Salarie' object
+        /// Crée un salarié en utilisant la console.
+        /// Demande les attributs et retourne un salarié
         /// </summary>
         public new static Salarie PromptCreate()
         {
@@ -102,10 +126,13 @@ namespace TransConnect_Console
             return s;
         }
 
+
+        /// <summary>
+        /// Crée un salarié en utilisant la console et lui assigne un manager
+        /// </summary>
         public static void PromptCreateWithManager() 
         {
             Salarie s = PromptCreate();
-
 
             bool success = false;
             int managerId;
@@ -120,17 +147,20 @@ namespace TransConnect_Console
             } while (!success);
 
             Salarie manager = GetSalarieByUid(managerId);
-            s.nextColleague = manager.managees;
-            manager.managees = s;
-            s.manager = manager;
+            manager.AddManagee(s);
         }
 
+
+        /// <summary>
+        /// Récupère une instance de salarié à partir d'un id
+        /// </summary>
+        /// <param name="id">Uid de l'employé à rechercher</param>
         public static Salarie GetSalarieByUid(int id)
         {
             return GetSalarieRecursive(CEO, id);
         }
 
-        public static Salarie GetSalarieRecursive(Salarie s, int id)
+        private static Salarie GetSalarieRecursive(Salarie s, int id)
         {
             if (s == null) return null;
 
@@ -150,6 +180,11 @@ namespace TransConnect_Console
             return GetSalarieRecursive(s.managees, id);
         }
 
+
+        /// <summary>
+        /// Renvoie un employé et tous ses subordonés de l'organisation
+        /// </summary>
+        /// <param name="s">Salarié à renvoyer</param>
         public static void FireWithTeam(Salarie s)
         {
             Salarie sal = s.manager.managees;
@@ -169,6 +204,11 @@ namespace TransConnect_Console
             }
         }
 
+
+        /// <summary>
+        /// Renvoie un employé de l'organisation et le remplace par un nouvel employé
+        /// </summary>
+        /// <param name="newSalarie">Nouvel employé pour remplacer l'ancien</param>
         public void FireAndReplaceBy(Salarie newSalarie)
         {
             Salarie sal = manager.managees;
@@ -198,6 +238,73 @@ namespace TransConnect_Console
 
         }
 
+
+        /// <summary>
+        /// Trouve tous les salariés qui vérifient le prédicat
+        /// </summary>
+        /// <returns>Liste de salariés</returns>
+        public ListeChainee<Salarie> FindAll(Predicate<Salarie> pred)
+        {
+            ListeChainee<Salarie> found = new ListeChainee<Salarie>();
+            FindAllRec(pred, this, found);
+            return found;
+        }
+
+        // Helper function for FindAll
+        private void FindAllRec(Predicate<Salarie> pred, Salarie current, ListeChainee<Salarie> found)
+        {
+            if (current == null)
+                return;
+
+            if (pred(current))
+                found.Add(current);
+
+            FindAllRec(pred, current.nextColleague, found);
+            FindAllRec(pred, current.managees, found);
+        }
+
+
+        /// <summary>
+        /// Trouve le premier (ou seul) salarié qui vérifie le prédicat
+        /// </summary>
+        public Salarie Find(Predicate<Salarie> match)
+        {
+            if (match(this))
+                return this;
+
+            Salarie s1 = null;
+            Salarie s2 = null;
+
+            if (nextColleague != null)
+                s1 = nextColleague.Find(match);
+            if (managees != null)
+                s2 = managees.Find(match);
+
+            if (s1 == null)
+                return s2;
+
+            return s1;
+        }
+
+
+        /// <summary>
+        /// Retourne le salarié avec les identifiants correspondant. Sinon, retourne null
+        /// </summary>
+        /// <param name="email">Email du salarié</param>
+        /// <param name="password">Mot de passe du salarié</param>
+        public static Salarie Login(string email, string password)
+        {
+            Salarie withEmail = CEO.Find(x => x.Email == email);
+
+            if (withEmail == null) return null;
+
+            if (withEmail.password == password)
+                return withEmail;
+
+            return null;
+        }
+
+        #region ISaveable
         public static void GetFromFile(string path)
         {
             string[] employeeData = File.ReadAllLines(path);
@@ -263,6 +370,7 @@ namespace TransConnect_Console
             File.WriteAllText(path, fullFileContent);
         }
 
+        // Helper recursive function for SaveToFile
         private static string NextGuyToString(Salarie s)
         {
             if (s == null)
@@ -287,80 +395,6 @@ namespace TransConnect_Console
             fileContent += NextGuyToString(s.managees);
             return fileContent;
         }
-
-        public override string ToString()
-        {
-            return base.ToString() + "\n| ID=" + uid + ", " + role;
-        }
-
-        public new string ToString(string indent)
-        {
-            return base.ToString(indent) + $"\n{indent}| ID={Uid}, {Role}";
-        }
-
-        public static void PrintFullCompanyTree(Salarie s, string indent="")
-        {
-            Console.WriteLine(s.ToString(indent));
-            if(s.managees != null)
-            {
-                PrintFullCompanyTree(s.managees, indent + "     ");
-            }
-            if(s.nextColleague != null)
-            {
-                PrintFullCompanyTree(s.nextColleague, indent);
-            }
-        }
-
-        public ListeChainee<Salarie> FindAll(Predicate<Salarie> pred)
-        {
-            ListeChainee<Salarie> found = new ListeChainee<Salarie>();
-            FindAllRec(pred, this, found);
-            return found;
-        }
-
-        private void FindAllRec(Predicate<Salarie> pred, Salarie current, ListeChainee<Salarie> found)
-        {
-            if (current == null)
-                return;
-
-            if (pred(current))
-                found.Add(current);
-
-            FindAllRec(pred, current.nextColleague, found);
-            FindAllRec(pred, current.managees, found);
-        }
-
-        public static Salarie Login(string email, string password)
-        {
-            Salarie withEmail = CEO.Find(x => x.Email == email);
-
-            if (withEmail == null) return null;
-
-            if (withEmail.password == password)
-                return withEmail;
-
-            return null;
-        }
-
-        public Salarie Find(Predicate<Salarie> match)
-        {
-            if (match(this))
-            {
-                return this;
-            }
-
-            Salarie s1 = null;
-            Salarie s2 = null;
-
-            if (nextColleague != null)
-                s1 = nextColleague.Find(match);
-            if(managees != null)
-                s2 = managees.Find(match);
-
-            if (s1 == null)
-                return s2;
-
-            return s1;
-        }
+#endregion
     }
 }

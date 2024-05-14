@@ -1,12 +1,5 @@
 ﻿using System;
-using System.CodeDom.Compiler;
 using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TransConnect_Console
 {
@@ -161,7 +154,6 @@ namespace TransConnect_Console
             return sum;
         }
 
-
         public void Sort(Comparison<T> comparison)
         {
             bool swapped;
@@ -183,6 +175,11 @@ namespace TransConnect_Console
             } while (swapped);
         }
 
+
+        /// <summary>
+        /// Implémentation de IEnumerator pour les listes chaînées. 
+        /// Permet d'utiliser les boucles foreach
+        /// </summary>
         private class LCEnumerator : IEnumerator
         {
             private int Position = -1;

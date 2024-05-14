@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TransConnect_Console
 {
@@ -17,7 +13,11 @@ namespace TransConnect_Console
             set { nbGroupesElectrogenes = value; }
         }
 
-        public Camion_frigorifique(int km, string immat, string produitTransporte, int nbGroupesElectrogenes) : base(km, immat, produitTransporte)
+        public Camion_frigorifique(PoidsLourdStruct p, int nbGroupesElectrogenes) : base(p)
+        {
+            this.nbGroupesElectrogenes = nbGroupesElectrogenes;
+        }
+        public Camion_frigorifique(int kms, string immat, string produitTransporte, int nbGroupesElectrogenes) : base(kms, immat, produitTransporte)
         {
             this.nbGroupesElectrogenes = nbGroupesElectrogenes;
         }
@@ -27,6 +27,11 @@ namespace TransConnect_Console
             return "Camion frigorifique : " + base.ToString();
         }
 
+
+        /// <summary>
+        /// Crée une instance de Camion_frigorifique à partir d'inputs de la console
+        /// </summary>
+        /// <returns>Instance crée</returns>
         public static new Camion_frigorifique PromptCreate()
         {
             PoidsLourdStruct p = PoidsLourd.PromptCreate();
@@ -40,7 +45,7 @@ namespace TransConnect_Console
                 success = Int32.TryParse(Console.ReadLine(), out nbGrps);
             } while (!success);
 
-            return new Camion_frigorifique(p.Kilometrage, p.Immat, p.ProduitTransporte, nbGrps);
+            return new Camion_frigorifique(p, nbGrps);
         }
     }
 }

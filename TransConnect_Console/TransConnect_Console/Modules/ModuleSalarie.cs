@@ -30,7 +30,7 @@ namespace TransConnect_Console.Modules
         public static void Menu(Salarie s)
         {
 
-            Dictionary<string, Action> employeeActions = new Dictionary<string, Action>
+            Dictionary<string, Action> employeeAdminActions = new Dictionary<string, Action>
             {
                 {"Licensier un employé (avec son équipe)" , FireTeam },
                 {"Licensier un employé (remplacer par un nouveau)" , FireAndReplaceByNew },      // TODO FIX
@@ -44,7 +44,16 @@ namespace TransConnect_Console.Modules
                 {"Module statistiques" , MenuStatistiques }
             };
 
-            Utils.Menu(employeeActions, "EMPLOYÉ: Sélectionnez une action");
+            Dictionary<string, Action> employeeActions = new Dictionary<string, Action>
+            {
+                {"Liste des clients" , MenuAfficherClients },       // TODO FIX
+                {"Afficher l'organigramme de la société" , () => {Salarie.PrintFullCompanyTree(Salarie.CEO); Console.ReadLine(); } },
+                {"Afficher la flotte de véhicules" , () => { Vehicule.AfficheVehicules(); Console.ReadLine(); } },
+                {"Module statistiques" , MenuStatistiques }
+            };
+
+
+            Utils.Menu(s.IsAdmin ?  employeeAdminActions : employeeActions, $"EMPLOYÉ: Sélectionnez une action");
 
             Menu(s);
         }

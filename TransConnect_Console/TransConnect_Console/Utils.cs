@@ -6,6 +6,12 @@ namespace TransConnect_Console
 {
     class Utils
     {
+        /// <summary>
+        /// Crée un menu à controler avec les flèches du clavier
+        /// </summary>
+        /// <param name="dict">Textes du menu et les actions associés</param>
+        /// <param name="hdrText">Header: texte écrit au dessus des éléments sélectionnables</param>
+        /// <param name="selectedColor">Couleur de l'élément sélectionné</param>
         public static void Menu(IDictionary<string, Action> dict, string hdrText, ConsoleColor selectedColor = ConsoleColor.Yellow)
         {
             int option = dict.Count * 100;      // Initialize at high value to avoid modulo issue with negative numbers

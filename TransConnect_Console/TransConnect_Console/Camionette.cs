@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TransConnect_Console
 {
@@ -25,10 +20,16 @@ namespace TransConnect_Console
             set { usage = value; }
         }
 
-        public Camionette(int km, string immat, string usage, string produitTransporte) : base(km, immat)
+        public Camionette(VehiculeStruct v, string usage, string produitTransporte) : base(v)
         {
             this.usage = usage;
             this.produitTransporte= produitTransporte;
+        }
+
+        public Camionette(int kms, string immat, string usage, string produitTransporte) : base(kms, immat)
+        {
+            this.usage = usage;
+            this.produitTransporte = produitTransporte;
         }
 
         public override string ToString()
@@ -36,6 +37,10 @@ namespace TransConnect_Console
             return "Camionette : " + base.ToString();
         }
 
+        /// <summary>
+        /// Crée une instance de Camionette à partir d'inputs de la console
+        /// </summary>
+        /// <returns>Instance crée</returns>
         public static new Camionette PromptCreate()
         {
             VehiculeStruct v = Vehicule.PromptCreate();
@@ -47,7 +52,7 @@ namespace TransConnect_Console
             string usage = Console.ReadLine();
 
 
-            return new Camionette(v.Kilometrage, v.Immat, usage, pTransporte);
+            return new Camionette(v, usage, pTransporte);
         }
     }
 }

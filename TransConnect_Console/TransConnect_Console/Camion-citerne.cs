@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TransConnect_Console
 {
@@ -24,7 +21,12 @@ namespace TransConnect_Console
             set { typeCuve = value; }
         }
 
-        public Camion_citerne(int km, string immat, string produitTransporte, CuveType typeCuve) : base(km, immat, produitTransporte)
+        public Camion_citerne(PoidsLourdStruct p, CuveType typeCuve) : base(p)
+        {
+            this.typeCuve = typeCuve;
+        }
+
+        public Camion_citerne(int kms, string immat, string produitTransporte, CuveType typeCuve) : base(kms, immat, produitTransporte)
         {
             this.typeCuve = typeCuve;
         }
@@ -34,6 +36,10 @@ namespace TransConnect_Console
             return "Camion citerne : " + base.ToString();
         }
 
+
+        /// <summary>
+        /// Convertit un CuveType stocké en string en un enum de type CuveType
+        /// </summary>
         public static CuveType ParseCuveType(string s)
         {
             if(s == "CuveIndustrielle")
@@ -46,6 +52,11 @@ namespace TransConnect_Console
             return CuveType.CuveClassique;
         }
 
+
+        /// <summary>
+        /// Crée une instance de Camion_citerne à partir d'inputs de la console
+        /// </summary>
+        /// <returns>Instance crée</returns>
         public static new Camion_citerne PromptCreate()
         {
             PoidsLourdStruct p = PoidsLourd.PromptCreate();
@@ -62,7 +73,7 @@ namespace TransConnect_Console
 
             Utils.Menu(cuveMenu, "Sélétionnez le type de cuve: ");
 
-            return new Camion_citerne(p.Kilometrage, p.Immat, p.ProduitTransporte, typeCuve);
+            return new Camion_citerne(p, typeCuve);
         }
     }
 }

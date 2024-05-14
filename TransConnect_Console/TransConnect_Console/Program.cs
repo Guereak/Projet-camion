@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using TransConnect_Console.Modules;
 
 namespace TransConnect_Console
@@ -9,16 +10,19 @@ namespace TransConnect_Console
         {
             Initialize();
 
-            ModuleSalarie.LoginMenu();
-            //ModuleClient.LoginMenu();
+            Dictionary<string, Action> moduleDict = new Dictionary<string, Action>
+            {
+                {"Module Client", ModuleClient.LoginMenu },
+                {"Module Salarié", ModuleSalarie.LoginMenu },
+            };
 
-            //Salarie.PrintFullCompanyTree(Salarie.CEO);
-            //Console.ReadLine();
-
-
-            Console.ReadLine();
+            Utils.Menu(moduleDict, "Quel module lancer?");
         }
 
+
+        /// <summary>
+        /// Initialise les fichiers de sauvegarde
+        /// </summary>
         public static void Initialize()
         {
             Ville.CreateVillesFromCsv("../../../Ressources/Distances.csv");
@@ -28,6 +32,10 @@ namespace TransConnect_Console
             Commande.GetFromFile("../../../Ressources/Commandes.csv");
         }
 
+
+        /// <summary>
+        /// Sauvegarde les fichiers dans leur état actuel
+        /// </summary>
         public static void Save()
         {
             Salarie.SaveToFile("../../../Ressources/Employes.csv");

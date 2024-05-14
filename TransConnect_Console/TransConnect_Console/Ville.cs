@@ -8,11 +8,11 @@ namespace TransConnect_Console
     {
         int id;
         string name;
-        public List<Edge> neighbours = new List<Edge>();
+        private List<Edge> neighbours = new List<Edge>();
 
         private static int idCounter = 0;
-        public static Dictionary<string, int> VilleToId = new Dictionary<string, int>();
-        public static Ville[] villes = Array.Empty<Ville>();
+        private static Dictionary<string, int> VilleToId = new Dictionary<string, int>();
+        private static Ville[] villes = Array.Empty<Ville>();
 
         public Ville(string name)
         {
@@ -28,6 +28,13 @@ namespace TransConnect_Console
         }
 
         public string Name { get { return name; } }
+        public List<Edge> Neighbours { get { return neighbours; } }
+
+        public override string ToString()
+        {
+            return $"id: {id}, name:{name}";
+        }
+
 
         /// <summary>
         /// Populate the "Ville" static parameters by reading from a CSV file
@@ -84,39 +91,12 @@ namespace TransConnect_Console
         }
 
 
-        public override string ToString()
-        {
-            return $"id: {id}, name:{name}";
-        }
-
-        //public static void DisplayVilles()
-        //{
-        //    foreach(Ville v in villes)
-        //    {
-        //        Console.WriteLine(v.name);
-        //        foreach (Edge e in v.neighbours)
-        //        {
-        //            Console.WriteLine($"    {e.destination.name}, {e.timeInMinutes}, {e.distance}");
-        //        }
-        //    }
-        //}
-
-
-        public static void AddToVilles(Ville v)
-        {
-            VilleToId.Add(v.name, v.id);
-
-            Ville[] vs = new Ville[villes.Length + 1];
-            for(int i = 0; i < villes.Length; i++)
-            {
-                vs[i] = villes[i];
-            }
-            vs[vs.Length - 1] = v;
-
-            villes = vs;
-        }
-
-
+        /// <summary>
+        /// Calcule le chemin le plus court entre deux villes 
+        /// </summary>
+        /// <param name="source">Ville de départ</param>
+        /// <param name="target">Ville d'arrivée</param>
+        /// <returns>Une Liste de villes représentant la feuille de route du chauffeur</returns>
         public static ListeChainee<Ville> Dijkstra(Ville source, Ville target)
         {
             Dictionary<Ville, int> dist = new Dictionary<Ville, int>();
@@ -151,17 +131,12 @@ namespace TransConnect_Console
             return GetPath(source, target, prev);
         }
 
-        private static ListeChainee<Ville> GetPath(Ville source, Ville target, Dictionary<Ville, Ville> prev)
-        {
-            ListeChainee<Ville> path = new ListeChainee<Ville>();
-            for (Ville at = target; at != null; at = prev.ContainsKey(at) ? prev[at] : null)
-            {
-                path.Add(at);
-            }
-            path.Reverse();
-            return path;
-        }
 
+        /// <summary>
+        /// Trouve une ville à partir de son nom
+        /// </summary>
+        /// <param name="name">Nom de la ville</param>
+        /// <returns>Objet ville avec le nom spécifié</returns>
         public static Ville FindByName(string name)
         {
             foreach(Ville v in villes)
@@ -172,6 +147,7 @@ namespace TransConnect_Console
             return null;
         }
 
+
         #region utilities
         // Utility function for CreateVillesFromCsv
         private static void CreateEdges(Ville v, Ville destination, int distance, int minutes){
@@ -180,8 +156,25 @@ namespace TransConnect_Console
             Edge e2 = new Edge { destination = destination, distance = distance, timeInMinutes = minutes };
             v.neighbours.Add(e2);
         }
-        
-        // Utility function for Dijkstra's algorithm
+
+
+        // Utility function for CreateVillesFromCsv
+        private static void AddToVilles(Ville v)
+        {
+            VilleToId.Add(v.name, v.id);
+
+            Ville[] vs = new Ville[villes.Length + 1];
+            for (int i = 0; i < villes.Length; i++)
+            {
+                vs[i] = villes[i];
+            }
+            vs[vs.Length - 1] = v;
+
+            villes = vs;
+        }
+
+
+        // Utility function for Dijkstra
         private static Ville RemoveMinVille(List<Ville> q, Dictionary<Ville, int> dist)
         {
             int distance = Int32.MaxValue;
@@ -198,7 +191,21 @@ namespace TransConnect_Console
 
             return v;
         }
-        
+
+
+        // Utility function for Dijkstra
+        private static ListeChainee<Ville> GetPath(Ville source, Ville target, Dictionary<Ville, Ville> prev)
+        {
+            ListeChainee<Ville> path = new ListeChainee<Ville>();
+            for (Ville at = target; at != null; at = prev.ContainsKey(at) ? prev[at] : null)
+            {
+                path.Add(at);
+            }
+            path.Reverse();
+            return path;
+        }
+
+
         // Utility function to parse a time in string format to an integer representing the number of minutes
         private static int TimeToMinutes(string s)
         {
@@ -210,6 +217,5 @@ namespace TransConnect_Console
         }
 
         #endregion
-
     }
 }

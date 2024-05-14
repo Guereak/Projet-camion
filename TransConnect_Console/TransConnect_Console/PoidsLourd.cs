@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TransConnect_Console
 {
@@ -21,6 +17,16 @@ namespace TransConnect_Console
             this.produitTransporte = produitTransporte;
         }
 
+        public PoidsLourd(VehiculeStruct v, string produitTransporte) : base(v)
+        {
+            this.produitTransporte = produitTransporte;
+        }
+
+        public PoidsLourd(PoidsLourdStruct p) : base(p.Kilometrage, p.Immat)
+        {
+            produitTransporte = p.ProduitTransporte;
+        }
+
         public struct PoidsLourdStruct
         {
             public int Kilometrage;
@@ -28,6 +34,10 @@ namespace TransConnect_Console
             public string ProduitTransporte;
         }
 
+
+        /// <summary>
+        /// Crée une structure de Poids Lourd à partir de la console
+        /// </summary>
         public static new PoidsLourdStruct PromptCreate()
         {
             VehiculeStruct v = Vehicule.PromptCreate();

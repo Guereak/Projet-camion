@@ -1,9 +1,4 @@
-﻿using Microsoft.SqlServer.Server;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace TransConnect_Console
 {
@@ -117,23 +112,55 @@ namespace TransConnect_Console
         #endregion
 
 
+        public override string ToString()
+        {
+            string s = "| " + Lastname.ToUpper() + " " + Firstname + ", " + Address.StreetNumber + " " + address.StreetName + ", " + address.City.ToUpper();
+            s += "\n| " + Email + "," + Telephone;
+            return s;
+        }
 
+
+        public string ToString(string indent)
+        {
+            string s = indent + "+ " + Lastname.ToUpper() + " " + Firstname + ", " + Address.StreetNumber + " " + address.StreetName + ", " + address.City.ToUpper();
+            s += $"\n{indent}| " + Email + "," + Telephone;
+
+            return s;
+        }
+
+
+        public string ToLongString()
+        {
+            string s = "-----------------------------------------------\nPrénom: " + Firstname;
+            s += "\nNom: " + Lastname;
+            s += "\nEmail: " + Email;
+            s += "\nTéléphone: " + Telephone;
+            s += "\nDate de naissance: " + Birthdate.ToShortDateString();
+            s += "\nAddresse: " + Address.StreetNumber + " " + address.StreetName + ", " + address.City.ToUpper();
+
+            return s;
+        }
+
+
+        /// <summary>
+        /// Creates a PersonneStruct struct representing a person based on console inputs
+        /// </summary>
         public static PersonneStruct PromptCreate()
         {
-            Console.WriteLine("Prénom : ");
+            Console.Write("Prénom : ");
             string prenom = Console.ReadLine().Trim().Normalize();
-            Console.WriteLine("Nom : ");
+            Console.Write("Nom : ");
             string nom = Console.ReadLine().Trim().Normalize();
-            Console.WriteLine("Email : ");
-            string mail = Console.ReadLine().Trim();        // Should go through RegEx validation
-            Console.WriteLine("Téléphone : ");      
-            string tel = Console.ReadLine().Trim();         // Should go through RegEx validation
+            Console.Write("Email : ");
+            string mail = Console.ReadLine().Trim();
+            Console.Write("Téléphone : ");      
+            string tel = Console.ReadLine().Trim(); 
 
             bool success = false;
             long numSS;
             do
             {
-                Console.WriteLine("(long) Numéro de sécurité sociale: ");
+                Console.Write("(long) Numéro de sécurité sociale: ");
                 string num = Console.ReadLine().Trim().Normalize();
                 success = Int64.TryParse(num, out numSS);
 
@@ -206,33 +233,6 @@ namespace TransConnect_Console
             };
 
             return p;
-        }
-
-        public override string ToString()
-        {
-            string s = "| " + Lastname.ToUpper() + " " + Firstname + ", " + Address.StreetNumber + " " + address.StreetName + ", " + address.City.ToUpper();
-            s += "\n| " + Email + "," + Telephone;
-            return s;
-        }
-
-        public string ToString(string indent)
-        {
-            string s = indent + "+ " + Lastname.ToUpper() + " " + Firstname + ", " + Address.StreetNumber + " " + address.StreetName + ", " + address.City.ToUpper();
-            s += $"\n{indent}| " + Email + "," + Telephone;
-
-            return s;
-        }
-
-        public string ToLongString()
-        {
-            string s = "-----------------------------------------------\nPrénom: " + Firstname;
-            s += "\nNom: " + Lastname;
-            s += "\nEmail: " + Email;
-            s += "\nTéléphone: " + Telephone;
-            s += "\nDate de naissance: " + Birthdate.ToShortDateString();
-            s += "\nAddresse: " + Address.StreetNumber + " " + address.StreetName + ", " + address.City.ToUpper();
-
-            return s;
         }
     }
 }
