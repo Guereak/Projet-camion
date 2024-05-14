@@ -3,7 +3,7 @@ using System.IO;
 
 namespace TransConnect_Console
 {
-    class Commande : ISaveable
+    public class Commande : ISaveable
     {
         private Client client;
         private Ville deliveryStartingPoint;
@@ -25,6 +25,12 @@ namespace TransConnect_Console
         public string Roadmap
         {
             get { return roadmap; }
+        }
+
+        public DateTime OrderDate
+        {
+            get { return orderDate; }
+            set { orderDate = value; }
         }
 
         public Commande(Client client, Ville deliveryStartingPoint, Ville deliveryDestinationPoint, Vehicule vehicle, DateTime orderDate, Chauffeur chauffeur, string description)

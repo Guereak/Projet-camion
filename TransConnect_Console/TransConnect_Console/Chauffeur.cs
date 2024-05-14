@@ -2,7 +2,7 @@
 
 namespace TransConnect_Console
 {
-    class Chauffeur : Salarie, IComparable<Chauffeur>
+    public class Chauffeur : Salarie, IComparable<Chauffeur>
     {
         private double hourlyRate;
         public ListeChainee<DateTime> bookedOn;

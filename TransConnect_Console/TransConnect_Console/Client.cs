@@ -5,7 +5,7 @@ using System.IO;
 
 namespace TransConnect_Console
 {
-    class Client : Personne, IComparable<Client>, ISaveable
+    public class Client : Personne, IComparable<Client>, ISaveable
     {
         private int uid;
         private static int uidCounter;
@@ -125,15 +125,11 @@ namespace TransConnect_Console
 
                 foreach(int i in availableVehicules)
                 {
-                    //Console.WriteLine(v.Uid + "   " + i);
-                    //Console.ReadLine();
-
                     if (v.Uid == i)
                     {
                         b = true;
                         break;
                     }
-
                 }
                 if (!b)
                 {

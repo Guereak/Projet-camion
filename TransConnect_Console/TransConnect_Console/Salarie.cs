@@ -4,7 +4,7 @@ using System.IO;
 
 namespace TransConnect_Console
 {
-    class Salarie : Personne, ISaveable
+    public class Salarie : Personne, ISaveable
     {
         private static int uidCounter = 0;
         public static Salarie CEO;

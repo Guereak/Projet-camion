@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace TransConnect_Console.Modules
 {
-    internal class ModuleClient
+    public class ModuleClient
     {
         public static void Menu(Client c)
         {

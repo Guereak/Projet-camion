@@ -2,7 +2,7 @@
 
 namespace TransConnect_Console
 {
-    abstract class Personne
+    public abstract class Personne
     {
         public struct Addresse
         {

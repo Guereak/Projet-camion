@@ -4,7 +4,7 @@ using System.IO;
 
 namespace TransConnect_Console
 {
-    abstract class Vehicule : ISaveable
+    public abstract class Vehicule : ISaveable
     {
         public static ListeChainee<Vehicule> flotte = new ListeChainee<Vehicule>();
         public ListeChainee<DateTime> bookedOn = new ListeChainee<DateTime>();

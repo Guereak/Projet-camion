@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace TransConnect_Console.Modules
 {
-    internal class ModuleSalarie
+    public class ModuleSalarie
     {
 
         public static void LoginMenu()
@@ -41,36 +41,25 @@ namespace TransConnect_Console.Modules
                 {"Liste des clients" , MenuAfficherClients },       // TODO FIX
                 {"Afficher l'organigramme de la société" , () => {Salarie.PrintFullCompanyTree(Salarie.CEO); Console.ReadLine(); } },
                 {"Afficher la flotte de véhicules" , () => { Vehicule.AfficheVehicules(); Console.ReadLine(); } },
-                {"Module statistiques" , MenuStatistiques }
+                {"Module statistiques" , ModuleStatistiques.Menu }
             };
 
             Dictionary<string, Action> employeeActions = new Dictionary<string, Action>
             {
-                {"Liste des clients" , MenuAfficherClients },       // TODO FIX
+                {"Liste des clients" , MenuAfficherClients },
                 {"Afficher l'organigramme de la société" , () => {Salarie.PrintFullCompanyTree(Salarie.CEO); Console.ReadLine(); } },
                 {"Afficher la flotte de véhicules" , () => { Vehicule.AfficheVehicules(); Console.ReadLine(); } },
-                {"Module statistiques" , MenuStatistiques }
+                {"Module statistiques" , ModuleStatistiques.Menu }
             };
 
 
             Utils.Menu(s.IsAdmin ?  employeeAdminActions : employeeActions, $"EMPLOYÉ: Sélectionnez une action");
 
+            //Program.Save()
             Menu(s);
         }
 
-        public static void MenuStatistiques()
-        {
-            Dictionary<string, Action> statsMenu = new Dictionary<string, Action>
-            {
-                {"Afficher par chauffeur le nombre de livraisons effectuées" , () => { } },
-                {"Afficher les commandes selon une période de temps" , () => { } },
-                {"Afficher la moyenne des prix des commandes" , () => { } },
-                {"Afficher la moyenne des comptes clients" , () => { } },
-                {"Afficher la liste des commandes pour un client" , () => { } }
-            };
-
-            Utils.Menu(statsMenu, "EMPLOYÉ: Statistiques");
-        }
+ 
 
         public static void MenuAfficherClients()
         {
@@ -87,6 +76,7 @@ namespace TransConnect_Console.Modules
             Client.clients.ForEach(Console.WriteLine);
             Console.ReadLine();
         }
+
 
         public static void FireTeam()
         {
