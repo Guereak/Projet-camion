@@ -65,11 +65,25 @@ namespace TransConnect_Console
 
             do
             {
-                Console.Write(message);
+                Console.Write("(int) " + message);
                 success = Int32.TryParse(Console.ReadLine(), out i);
             } while (!success);
 
             return i;
+        }
+
+        public static DateTime AlwaysCastAsDate(string message)
+        {
+            DateTime d;
+            bool success = false;
+
+            do
+            {
+                Console.Write(message + " (DD/MM/YYYY): ");
+                success = DateTime.TryParseExact(Console.ReadLine(), "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out d);
+            } while (!success);
+
+            return d;
         }
     }
 }

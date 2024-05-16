@@ -57,11 +57,16 @@ namespace TransConnect_Console
             return base.ToString(indent) + $"\n{indent}| ID={Uid}, {Role}";
         }
 
+        public string ToShortString(string indent = "")
+        {
+            return indent + $"|{Uid}| {Firstname} {Lastname} : {Role}";
+        }
 
         /// <summary>
         /// Affiche tout l'arbre des employés dans la console
         /// </summary>
         /// <param name="s">PDG de l'organisation</param>
+        /// <param name="toString">ToString() ou ToShortString()</param>
         public static void PrintFullCompanyTree(Salarie s, string indent = "")
         {
             Console.WriteLine(s.ToString(indent));
@@ -72,6 +77,20 @@ namespace TransConnect_Console
             if (s.nextColleague != null)
             {
                 PrintFullCompanyTree(s.nextColleague, indent);
+            }
+        }
+
+
+        public static void PrintShortCompanyTree(Salarie s, string indent = "")
+        {
+            Console.WriteLine(s.ToShortString(indent));
+            if (s.managees != null)
+            {
+                PrintShortCompanyTree(s.managees, indent + "     ");
+            }
+            if (s.nextColleague != null)
+            {
+                PrintShortCompanyTree(s.nextColleague, indent);
             }
         }
 
@@ -111,15 +130,8 @@ namespace TransConnect_Console
             Console.WriteLine("Rôle du salarié: ");
             string role = Console.ReadLine();
 
-            bool success = false;
-            int salaire;
-            do
-            {
-                Console.WriteLine("(int) Salaire: ");
-                string num = Console.ReadLine().Trim();
-                success = Int32.TryParse(num, out salaire);
+            int salaire = Utils.AlwaysCastAsInt("Salaire: ");
 
-            } while (!success);
 
             Salarie s = new Salarie(p, role, salaire);
             s.dateJoined = DateTime.Now;
@@ -134,20 +146,16 @@ namespace TransConnect_Console
         public static void PromptCreateWithManager() 
         {
             Salarie s = PromptCreate();
+            PrintShortCompanyTree(CEO);
 
-            bool success = false;
-            int managerId;
-
-            PrintFullCompanyTree(CEO);
+            Salarie manager = null;
 
             do
             {
-                Console.WriteLine("(int) ManagerID: ");
-                string num = Console.ReadLine().Trim();
-                success = Int32.TryParse(num, out managerId);
-            } while (!success);
+                int managerId = Utils.AlwaysCastAsInt("ManagerID: ");
+                manager = GetSalarieByUid(managerId);
+            } while (manager == null);
 
-            Salarie manager = GetSalarieByUid(managerId);
             manager.AddManagee(s);
         }
 

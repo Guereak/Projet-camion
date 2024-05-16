@@ -6,7 +6,6 @@ namespace TransConnect_Console.Modules
 {
     public class ModuleSalarie
     {
-
         public static void LoginMenu()
         {
             Console.Write("Email: ");
@@ -29,7 +28,6 @@ namespace TransConnect_Console.Modules
 
         public static void Menu(Salarie s)
         {
-
             Dictionary<string, Action> employeeAdminActions = new Dictionary<string, Action>
             {
                 {"Licensier un employé (avec son équipe)" , FireTeam },
@@ -39,12 +37,6 @@ namespace TransConnect_Console.Modules
                 {"Grille des salaires", () => SalaryGrid(s) },
                 {"Ajouter un véhicule" , PromptCreateVehicule },
                 {"Retirer un véhicule" , RemoveVehicule },
-                {"Liste des clients" , MenuAfficherClients },
-                {"Afficher l'organigramme de la société" , () => {Salarie.PrintFullCompanyTree(Salarie.CEO); Console.ReadLine(); } },
-                {"Afficher la flotte de véhicules" , () => { Vehicule.AfficheVehicules(); Console.ReadLine(); } },
-                {"Module statistiques" , ModuleStatistiques.Menu },
-                {"Changer mes informations personnelles" , s.PromptAlterPersonnalInfo }
-
             };
 
             Dictionary<string, Action> employeeActions = new Dictionary<string, Action>
@@ -56,8 +48,35 @@ namespace TransConnect_Console.Modules
                 {"Changer mes informations personnelles" , s.PromptAlterPersonnalInfo }
             };
 
+            Dictionary<string, Action> chauffeurActions = new Dictionary<string, Action>
+            {
+                {"Afficher les commandes à venir",  () => { } }
+            };
 
-            Utils.Menu(s.IsAdmin ?  employeeAdminActions : employeeActions, $"EMPLOYÉ: Sélectionnez une action");
+
+            Dictionary<string, Action> actions = new Dictionary<string, Action>();
+
+            if(s is Chauffeur)
+            {
+                foreach (KeyValuePair<string, Action> kvp in chauffeurActions)
+                {
+                    actions.Add(kvp.Key, kvp.Value);
+                }
+            }
+
+            if (s.IsAdmin)
+            {
+                foreach(KeyValuePair<string, Action> kvp in employeeAdminActions)
+                {
+                    actions.Add(kvp.Key, kvp.Value);
+                }
+            }
+            foreach (KeyValuePair<string, Action> kvp in employeeActions)
+            {
+                actions.Add(kvp.Key, kvp.Value);
+            }
+
+            Utils.Menu(actions, "EMPLOYÉ: Sélectionnez une action");
 
             //Program.Save()
             Menu(s);
@@ -84,13 +103,13 @@ namespace TransConnect_Console.Modules
 
         public static void FireTeam()
         {
-            Salarie.PrintFullCompanyTree(Salarie.CEO);  // Ou alors proposer de ne virer que les subordonés - 
+            Salarie.PrintShortCompanyTree(Salarie.CEO);
 
             Salarie s = PromptForSalarieNotNull();
 
             Salarie.FireWithTeam(s);
 
-            Salarie.PrintFullCompanyTree(Salarie.CEO);
+            Salarie.PrintShortCompanyTree(Salarie.CEO);
             Console.ReadLine();
         }
 
@@ -98,7 +117,7 @@ namespace TransConnect_Console.Modules
         {
             Salarie newSalarie = Salarie.PromptCreate();
 
-            Salarie.PrintFullCompanyTree(Salarie.CEO); 
+            Salarie.PrintShortCompanyTree(Salarie.CEO); 
             Salarie s = PromptForSalarieNotNull();
 
             s.FireAndReplaceBy(newSalarie);
@@ -106,7 +125,7 @@ namespace TransConnect_Console.Modules
 
         public static void ChangeSalaryByUid()
         {
-            Salarie.PrintFullCompanyTree(Salarie.CEO);
+            Salarie.PrintShortCompanyTree(Salarie.CEO);
             Salarie s = PromptForSalarieNotNull("Id de l'employé à modifier: ");
             Console.WriteLine($"Le salaire de {s.Firstname} {s.Lastname} est de {s.Salary}.");
 
@@ -127,14 +146,7 @@ namespace TransConnect_Console.Modules
             // Input sanitization
             do
             {
-                bool success = false;
-                int id;
-
-                do
-                {
-                    Console.Write(message);
-                    success = Int32.TryParse(Console.ReadLine(), out id);
-                } while (!success);
+                int id = Utils.AlwaysCastAsInt(message);
 
                 s = Salarie.GetSalarieByUid(id);
 
@@ -168,20 +180,10 @@ namespace TransConnect_Console.Modules
         {
             Vehicule.AfficheVehicules();
 
-            int driverId;
-            bool success = false;
-
             Vehicule v = null;
             while (v == null)
             {
-                do
-                {
-                    Console.WriteLine("(int) ID du véhicule: ");
-                    string num = Console.ReadLine().Trim();
-                    success = Int32.TryParse(num, out driverId);
-
-                } while (!success);
-
+                int driverId = Utils.AlwaysCastAsInt("ID du véhicule");
                 v = Vehicule.GetVehiculeByUid(driverId);
             }
 

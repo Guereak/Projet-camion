@@ -27,13 +27,7 @@ namespace TransConnect_Console.Modules
         {
             Client.clients.ForEach(c => Console.WriteLine(c.Uid + c.ToString()));
 
-            bool success = false;
-            int cid = 0;
-
-            do
-            {
-                success = Int32.TryParse(Console.ReadLine(), out cid);
-            } while (!success);
+            int cid = Utils.AlwaysCastAsInt("ID du client:");
 
             Client c = Client.GetClientByUid(cid);
             c.pastOrders.ForEach(Console.WriteLine);
@@ -95,23 +89,8 @@ namespace TransConnect_Console.Modules
 
         public static void ViewOrdersBetweenDates()
         {
-            DateTime beginDate;
-            bool success = false;
-
-            do
-            {
-                Console.Write("Date de début (DD/MM/YYYY): ");
-                success = DateTime.TryParseExact(Console.ReadLine(), "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out beginDate);
-            } while (!success);
-
-            DateTime finishDate;
-            success = false;
-
-            do
-            {
-                Console.Write("Date de fin (DD/MM/YYYY): ");
-                success = DateTime.TryParseExact(Console.ReadLine(), "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out finishDate);
-            } while (!success);
+            DateTime beginDate = Utils.AlwaysCastAsDate("Date de début");
+            DateTime finishDate = Utils.AlwaysCastAsDate("Date de fin");
 
             foreach (Client c in Client.clients)
             {

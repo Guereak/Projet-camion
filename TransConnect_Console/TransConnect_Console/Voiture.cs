@@ -1,4 +1,6 @@
 ﻿using System;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Net;
 
 namespace TransConnect_Console
 {
@@ -25,15 +27,7 @@ namespace TransConnect_Console
         public static new Voiture PromptCreate()
         {
             VehiculeStruct v = Vehicule.PromptCreate();
-
-            bool success = false;
-            int nbPassagers;
-
-            do
-            {
-                Console.Write("Nombre de passagers maximum dans le véhicule: ");
-                success = Int32.TryParse(Console.ReadLine(), out nbPassagers);
-            } while (!success);
+            int nbPassagers = Utils.AlwaysCastAsInt("Nombre de passagers maximum dans le véhicule");
 
             return new Voiture(v.Kilometrage, v.Immat, nbPassagers);
         }

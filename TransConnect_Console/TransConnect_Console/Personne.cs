@@ -219,58 +219,15 @@ namespace TransConnect_Console
 
             } while (!success);
 
-            // DATETIME PARSING
-            success = false;
-            int year;
-            do
-            {
-                Console.WriteLine("(int) Année de naissance: ");
-                string rue = Console.ReadLine().Trim().Normalize();
-                success = Int32.TryParse(rue, out year);
 
-            } while (!success);
-            success = false;
-            int month;
-            do
-            {
-                Console.WriteLine("(int) Mois de naissance: ");
-                string rue = Console.ReadLine().Trim().Normalize();
-                success = Int32.TryParse(rue, out month);
-
-                if(month > 12 ||  month < 1)
-                    success = false;
-
-            } while (!success);
-            success = false;
-            int day;
-            do
-            {
-                Console.WriteLine("(int) Jour de naissance: ");
-                string rue = Console.ReadLine().Trim().Normalize();
-                success = Int32.TryParse(rue, out day);
-
-                if(day > 31 || day < 1)
-                    success = false;
-
-            } while (!success);
-
-            DateTime birthdate = new DateTime(year, month, day);
+            DateTime birthdate = Utils.AlwaysCastAsDate("Date de naissance");
 
             // ADDRESS PARSING
             Console.WriteLine("Ville :");
             string ville = Console.ReadLine().Trim().Normalize();
             Console.WriteLine("Nom de rue:");
             string nomRue = Console.ReadLine().Trim().Normalize();
-
-            success = false;
-            int numRue;
-            do
-            {
-                Console.WriteLine("(int) Numéro de rue: ");
-                string rue = Console.ReadLine().Trim().Normalize();
-                success = Int32.TryParse(rue, out numRue);
-
-            } while(!success);
+            int numRue = Utils.AlwaysCastAsInt("Numéro de rue: "); 
 
             Addresse address = new Addresse { City=ville, StreetName= nomRue, StreetNumber=numRue};
 

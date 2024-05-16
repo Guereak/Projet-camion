@@ -44,14 +44,7 @@ namespace TransConnect_Console
         {
             PoidsLourdStruct p = PoidsLourd.PromptCreate();
 
-            bool success = false;
-            int nbBennes;
-
-            do
-            {
-                Console.Write("Nombre de bennes: ");
-                success = Int32.TryParse(Console.ReadLine(), out nbBennes);
-            } while (!success);
+            int nbBennes = Utils.AlwaysCastAsInt("Nombre de bennes: ");
 
             Console.Write("Le camion possède t-il une grue? (O/N): ");
             string s = Console.ReadLine();

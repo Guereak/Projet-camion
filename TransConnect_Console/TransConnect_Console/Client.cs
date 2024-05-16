@@ -102,14 +102,7 @@ namespace TransConnect_Console
             Console.Write("Description de la commande: ");
             string desc = Console.ReadLine();
 
-            DateTime parsedDate;
-            bool success;
-
-            do
-            {
-                Console.Write("Date (DD/MM/YYYY): ");
-                success = DateTime.TryParseExact(Console.ReadLine(), "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out parsedDate);
-            } while (!success);
+            DateTime parsedDate = Utils.AlwaysCastAsDate("Date");
 
             Console.Clear();
             ListeChainee<int> availableVehicules = Vehicule.AfficherVehiculesDisponibles(parsedDate);
@@ -151,19 +144,10 @@ namespace TransConnect_Console
                 Console.WriteLine(drivers[i].ToString() + "\n");
             }
 
-            int driverId;
-            success = false;
-
             Chauffeur driver = null;
             while(driver == null)
             {
-                do
-                {
-                    Console.WriteLine("(int) ID du chauffeur: ");
-                    string num = Console.ReadLine().Trim();
-                    success = Int32.TryParse(num, out driverId);
-
-                } while (!success);
+                int driverId = Utils.AlwaysCastAsInt("ID du chauffeur: ");
 
                 driver = Salarie.GetSalarieByUid(driverId) as Chauffeur;
             }

@@ -119,15 +119,7 @@ namespace TransConnect_Console
             Console.Write("Immatriculation du véhicule: ");
             
             string immat = Console.ReadLine();
-
-            bool success = false;
-            int kilometrage = 0;
-
-            do
-            {
-                Console.Write("Kilométrage du véhicule (zéro si neuf): ");
-                success = Int32.TryParse(Console.ReadLine(), out kilometrage);
-            } while (success == false);
+            int kilometrage = Utils.AlwaysCastAsInt("Kilométrage du véhicule");
 
             return new VehiculeStruct { Immat = immat, Kilometrage = kilometrage};
         }
