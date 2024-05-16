@@ -35,12 +35,16 @@ namespace TransConnect_Console.Modules
                 {"Licensier un employé (avec son équipe)" , FireTeam },
                 {"Licensier un employé (remplacer par un nouveau)" , FireAndReplaceByNew },
                 {"Embaucher un nouvel employé" , Salarie.PromptCreateWithManager },
+                {"Modifier le salaire d'un employé" , ChangeSalaryByUid },
+                {"Grille des salaires", () => SalaryGrid(s) },
                 {"Ajouter un véhicule" , PromptCreateVehicule },
                 {"Retirer un véhicule" , RemoveVehicule },
                 {"Liste des clients" , MenuAfficherClients },
                 {"Afficher l'organigramme de la société" , () => {Salarie.PrintFullCompanyTree(Salarie.CEO); Console.ReadLine(); } },
                 {"Afficher la flotte de véhicules" , () => { Vehicule.AfficheVehicules(); Console.ReadLine(); } },
-                {"Module statistiques" , ModuleStatistiques.Menu }
+                {"Module statistiques" , ModuleStatistiques.Menu },
+                {"Changer mes informations personnelles" , s.PromptAlterPersonnalInfo }
+
             };
 
             Dictionary<string, Action> employeeActions = new Dictionary<string, Action>
@@ -48,7 +52,8 @@ namespace TransConnect_Console.Modules
                 {"Liste des clients" , MenuAfficherClients },
                 {"Afficher l'organigramme de la société" , () => {Salarie.PrintFullCompanyTree(Salarie.CEO); Console.ReadLine(); } },
                 {"Afficher la flotte de véhicules" , () => { Vehicule.AfficheVehicules(); Console.ReadLine(); } },
-                {"Module statistiques" , ModuleStatistiques.Menu }
+                {"Module statistiques" , ModuleStatistiques.Menu },
+                {"Changer mes informations personnelles" , s.PromptAlterPersonnalInfo }
             };
 
 
@@ -99,7 +104,23 @@ namespace TransConnect_Console.Modules
             s.FireAndReplaceBy(newSalarie);
         }
 
-        public static Salarie PromptForSalarieNotNull()
+        public static void ChangeSalaryByUid()
+        {
+            Salarie.PrintFullCompanyTree(Salarie.CEO);
+            Salarie s = PromptForSalarieNotNull("Id de l'employé à modifier: ");
+            Console.WriteLine($"Le salaire de {s.Firstname} {s.Lastname} est de {s.Salary}.");
+
+            s.Salary = Utils.AlwaysCastAsInt("Nouveau salaire:");
+        }
+
+        public static void SalaryGrid(Salarie sal)
+        {
+            Console.Clear();
+            sal.ForEach(s => Console.WriteLine($"{s.Firstname} {s.Lastname}, {s.Role} | {s.Salary}"));
+            Console.ReadLine();
+        }
+
+        public static Salarie PromptForSalarieNotNull(string message = "Id de l'employé à licensier: ")
         {
             Salarie s = null;
 
@@ -111,7 +132,7 @@ namespace TransConnect_Console.Modules
 
                 do
                 {
-                    Console.Write("Id de l'employé à licensier: ");
+                    Console.Write(message);
                     success = Int32.TryParse(Console.ReadLine(), out id);
                 } while (!success);
 

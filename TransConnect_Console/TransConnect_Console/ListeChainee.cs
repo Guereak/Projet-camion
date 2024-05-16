@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace TransConnect_Console
 {
-    public class ListeChainee<T> : IEnumerable
+    public class ListeChainee<T> : IEnumerable, IDataStruct<T>
     {
         public Node<T> tete;
 

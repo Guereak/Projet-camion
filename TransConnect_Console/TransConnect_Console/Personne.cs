@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Transactions;
 
 namespace TransConnect_Console
 {
@@ -111,6 +112,58 @@ namespace TransConnect_Console
 
         #endregion
 
+
+        public void PromptAlterPersonnalInfo()
+        {
+            Console.WriteLine("Veuillez entrer les nouvelles informations (Laissez vide pour ne pas changer):");
+            Console.Write("Prénom: ");
+            string buffer = Console.ReadLine();
+            if (buffer.Trim() != "")
+                Firstname = buffer.Trim().Normalize();
+            
+            Console.Write("Nom: ");
+            buffer = Console.ReadLine();
+            if (buffer.Trim() != "")
+                Lastname = buffer.Trim().Normalize();
+
+
+            Console.Write("Email: ");
+            buffer = Console.ReadLine();
+            if (buffer.Trim() != "")
+                Email = buffer.Trim();
+
+            Console.Write("Téléphone: ");
+            buffer = Console.ReadLine();
+            if (buffer.Trim() != "")
+                Telephone = buffer.Trim();
+
+            Addresse a = new Addresse{StreetNumber=Address.StreetNumber, StreetName=Address.StreetName, City=Address.City};
+
+            Console.Write("(Addresse) Ville: ");
+            buffer = Console.ReadLine();
+            if (buffer.Trim() != "")
+                a.City = buffer.Trim();
+
+
+            Console.Write("(Addresse) Nom de la rue: ");
+            buffer = Console.ReadLine();
+            if (buffer.Trim() != "")
+                a.StreetName = buffer.Trim();
+
+
+            bool success = false;
+            do
+            {
+                Console.Write("(Addresse) Numéro de rue: ");
+                string s = Console.ReadLine();
+                if (s.Trim() == "")
+                    success = true;
+                else
+                    success = Int32.TryParse(s, out a.StreetNumber);
+            } while (!success);
+
+            Address = a;
+        }
 
         public override string ToString()
         {

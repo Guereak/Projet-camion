@@ -57,5 +57,19 @@ namespace TransConnect_Console
             }
 
         }
+
+        public static int AlwaysCastAsInt(string message)
+        {
+            bool success = false;
+            int i;
+
+            do
+            {
+                Console.Write(message);
+                success = Int32.TryParse(Console.ReadLine(), out i);
+            } while (!success);
+
+            return i;
+        }
     }
 }

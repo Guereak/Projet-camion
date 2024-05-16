@@ -12,6 +12,7 @@ namespace TransConnect_Console.Modules
                 {"Passer commande", c.PromptCreateCommande },
                 {"Voir mes commandes", () => c.pastOrders.ForEach(c => {Console.WriteLine(c); Console.WriteLine(c.Roadmap); })},
                 {"Voir mes informations", () => Console.WriteLine(c.ToLongString())},
+                {"Changer mes informations personnelles", c.PromptAlterPersonnalInfo },
                 {"Se déconnecter", LoginMenu },
             };
 

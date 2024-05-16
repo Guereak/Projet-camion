@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace TransConnect_Console
 {
-    public class Salarie : Personne, ISaveable
+    public class Salarie : Personne, ISaveable, IDataStruct<Salarie>
     {
         private static int uidCounter = 0;
         public static Salarie CEO;
@@ -284,6 +285,21 @@ namespace TransConnect_Console
                 return s2;
 
             return s1;
+        }
+
+        /// <summary>
+        /// Performe une action pour chaque employé dans l'organigramme, peu importe sa position
+        /// </summary>
+        /// <param name="a">Action à effectuer</param>
+        public void ForEach(Action<Salarie> a)
+        {
+            a(this);
+
+            if (nextColleague != null)
+                nextColleague.ForEach(a);
+            if (managees != null)
+                 managees.ForEach(a);
+
         }
 
 
