@@ -46,7 +46,9 @@ namespace TransConnect_Console.Modules
                 {"Afficher l'organigramme de la société" , () => {Salarie.PrintFullCompanyTree(Salarie.CEO); Console.ReadLine(); } },
                 {"Afficher la flotte de véhicules" , () => { Vehicule.AfficheVehicules(); Console.ReadLine(); } },
                 {"Module statistiques" , ModuleStatistiques.Menu },
-                {"Changer mes informations personnelles" , s.PromptAlterPersonnalInfo }
+                {"Changer mes informations personnelles" , s.PromptAlterPersonnalInfo },
+                {"Se déconnecter", LoginMenu }
+
             };
 
             Dictionary<string, Action> chauffeurActions = new Dictionary<string, Action>
@@ -55,6 +57,10 @@ namespace TransConnect_Console.Modules
                 {"Afficher les commandes à venir",  () => ChauffeurAction(s as Chauffeur) }
             };
 
+            Dictionary<string, Action> CEOActions = new Dictionary<string, Action>
+            {
+                {"Promouvoir en administrateur",  PromoteToAdmin }
+            };
 
             Dictionary<string, Action> actions = new Dictionary<string, Action>();
 
@@ -73,10 +79,19 @@ namespace TransConnect_Console.Modules
                     actions.Add(kvp.Key, kvp.Value);
                 }
             }
+            if (s == Salarie.CEO)
+            {
+                foreach (KeyValuePair<string, Action> kvp in CEOActions)
+                {
+                    actions.Add(kvp.Key, kvp.Value);
+                }
+            }
+
             foreach (KeyValuePair<string, Action> kvp in employeeActions)
             {
                 actions.Add(kvp.Key, kvp.Value);
             }
+
 
             Utils.Menu(actions, $"EMPLOYÉ: {s.Lastname} {s.Firstname}, {s.Role}");
 
@@ -99,6 +114,16 @@ namespace TransConnect_Console.Modules
 
             Client.clients.Sort(Client.CompareByCity);
             Client.clients.ForEach(x => Console.WriteLine(x.ToString() + '\n'));
+            Console.ReadLine();
+        }
+
+        public static void PromoteToAdmin()
+        {
+            Salarie.PrintShortCompanyTree(Salarie.CEO);
+
+            Salarie s = PromptForSalarieNotNull();
+            s.IsAdmin = true;
+            Console.WriteLine("L'employé est maintenant administrateur");
             Console.ReadLine();
         }
 

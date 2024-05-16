@@ -25,7 +25,7 @@ namespace TransConnect_Console
 
         public int Uid { get { return uid; } }
 
-        public bool IsAdmin { get { return isAdmin; } }
+        public bool IsAdmin { get { return isAdmin; } set { isAdmin = value; } }
 
         public string Role
         {
