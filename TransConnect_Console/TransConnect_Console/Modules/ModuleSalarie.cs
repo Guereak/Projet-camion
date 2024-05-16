@@ -80,7 +80,7 @@ namespace TransConnect_Console.Modules
 
             Utils.Menu(actions, $"EMPLOYÉ: {s.Lastname} {s.Firstname}, {s.Role}");
 
-            Program.Save()
+            Program.Save();
             Menu(s);
         }
 
