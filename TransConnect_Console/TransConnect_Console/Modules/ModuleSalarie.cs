@@ -33,12 +33,11 @@ namespace TransConnect_Console.Modules
             Dictionary<string, Action> employeeAdminActions = new Dictionary<string, Action>
             {
                 {"Licensier un employé (avec son équipe)" , FireTeam },
-                {"Licensier un employé (remplacer par un nouveau)" , FireAndReplaceByNew },      // TODO FIX
-                {"Licensier un employé (remplacer par employé actuel)" , () => { } },       // TODO
+                {"Licensier un employé (remplacer par un nouveau)" , FireAndReplaceByNew },
                 {"Embaucher un nouvel employé" , Salarie.PromptCreateWithManager },
                 {"Ajouter un véhicule" , PromptCreateVehicule },
                 {"Retirer un véhicule" , RemoveVehicule },
-                {"Liste des clients" , MenuAfficherClients },       // TODO FIX
+                {"Liste des clients" , MenuAfficherClients },
                 {"Afficher l'organigramme de la société" , () => {Salarie.PrintFullCompanyTree(Salarie.CEO); Console.ReadLine(); } },
                 {"Afficher la flotte de véhicules" , () => { Vehicule.AfficheVehicules(); Console.ReadLine(); } },
                 {"Module statistiques" , ModuleStatistiques.Menu }
@@ -73,7 +72,7 @@ namespace TransConnect_Console.Modules
             Utils.Menu(clientsMenu, "EMPLOYÉ: Afficher les clients");
 
             Client.clients.Sort(Client.CompareByCity);
-            Client.clients.ForEach(Console.WriteLine);
+            Client.clients.ForEach(x => Console.WriteLine(x.ToString() + '\n'));
             Console.ReadLine();
         }
 

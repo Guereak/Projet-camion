@@ -354,7 +354,6 @@ namespace TransConnect_Console
                 }
                 else
                 {
-                    Console.WriteLine(data[0] + " " + data[1]);
                     Salarie manager = GetSalarieByUid(Int32.Parse(data[1]));
                     s.manager = manager;
                     manager.AddManagee(s);

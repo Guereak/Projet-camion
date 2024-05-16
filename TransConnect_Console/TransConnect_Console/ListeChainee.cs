@@ -145,6 +145,8 @@ namespace TransConnect_Console
             double sum = 0;
             Node<T> ret = tete;
 
+            if (ret == null) return 0;
+
             while (ret.next != null)
             {
                 sum += f(ret.value);
