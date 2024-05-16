@@ -157,6 +157,7 @@ namespace TransConnect_Console
 
             Commande c = new Commande(this, startCity, destCity, v, parsedDate, driver, desc);
             this.pastOrders.Add(c);
+            driver.Orders.Add(c);
 
             Console.WriteLine("Commande ajoutée.");
         }

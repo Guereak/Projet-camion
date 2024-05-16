@@ -33,6 +33,16 @@ namespace TransConnect_Console
             set { orderDate = value; }
         }
 
+        public string DeliveryStartingPoint
+        {
+            get { return deliveryStartingPoint.Name; }
+        }
+        public string DeliveryDestinationPoint
+        {
+            get { return deliveryDestinationPoint.Name; }
+        }
+
+
         public Commande(Client client, Ville deliveryStartingPoint, Ville deliveryDestinationPoint, Vehicule vehicle, DateTime orderDate, Chauffeur chauffeur, string description)
         {
             Console.WriteLine(vehicle);
@@ -51,13 +61,14 @@ namespace TransConnect_Console
 
         public override string ToString()
         {
-            string s = "Ville de Départ: " + deliveryStartingPoint.ToString();
-            s += "\nVille d'arrivée: " + deliveryDestinationPoint.ToString();
-            s += "\nDate de la commande: " + orderDate.ToShortDateString();
-            s += "\nPrix TTC: " + TotalPrice.ToString();
+            string s = "-------------------------";
+            s += $"\n{deliveryStartingPoint.Name} => {deliveryDestinationPoint.Name}";
+            s += $"\nClient: {client.Firstname} {client.Lastname}";
+            s += $"\nChauffeur: {chauffeur.Firstname} {chauffeur.Lastname}" ;
+            s += $"\nVéhicule: {vehicle}";
             s += "\nDescription: " + description;
-            s += "\nChauffeur: " + chauffeur.ToString();
-            s += "\nVéhicule: " + vehicle.ToString();
+            s += "\nDate: " + OrderDate.ToShortDateString();
+            s += "\nPrix TTC: " + TotalPrice.ToString() + " EUR";
 
             return s;
         }
@@ -125,6 +136,8 @@ namespace TransConnect_Console
                 client.AddOrder(c);
                 //Assign the order to the chauffeur
                 (driver as Chauffeur).bookedOn.Add(orderDate);
+                (driver as Chauffeur).Orders.Add(c);
+
                 vehicule.bookedOn.Add(orderDate);
             }
         }

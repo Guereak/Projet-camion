@@ -6,10 +6,17 @@ namespace TransConnect_Console
     {
         private double hourlyRate;
         public ListeChainee<DateTime> bookedOn;
+        private ListeChainee<Commande> orders;
 
         public double HourlyRate
         {
             get { return hourlyRate; }
+        }
+
+        public ListeChainee<Commande> Orders
+        {
+            get { return orders; }
+            set { orders = value; }
         }
 
         public int CompareTo(Chauffeur c)
@@ -20,6 +27,7 @@ namespace TransConnect_Console
         public Chauffeur(PersonneStruct personneStruct, string role, int salary, double hourlyRate) : base(personneStruct, role, salary)
         {
             bookedOn = new ListeChainee<DateTime>();
+            Orders = new ListeChainee<Commande>();
             this.hourlyRate = hourlyRate;
         }
 

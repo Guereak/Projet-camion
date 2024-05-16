@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Xml.XPath;
 
 namespace TransConnect_Console.Modules
 {
@@ -50,7 +51,8 @@ namespace TransConnect_Console.Modules
 
             Dictionary<string, Action> chauffeurActions = new Dictionary<string, Action>
             {
-                {"Afficher les commandes à venir",  () => { } }
+                //{"Afficher les commandes à venir",  () => { (s as Chauffeur).Orders.ForEach(Console.WriteLine); Console.ReadLine(); } }
+                {"Afficher les commandes à venir",  () => ChauffeurAction(s as Chauffeur) }
             };
 
 
@@ -76,9 +78,9 @@ namespace TransConnect_Console.Modules
                 actions.Add(kvp.Key, kvp.Value);
             }
 
-            Utils.Menu(actions, "EMPLOYÉ: Sélectionnez une action");
+            Utils.Menu(actions, $"EMPLOYÉ: {s.Lastname} {s.Firstname}, {s.Role}");
 
-            //Program.Save()
+            Program.Save()
             Menu(s);
         }
 
@@ -97,6 +99,27 @@ namespace TransConnect_Console.Modules
 
             Client.clients.Sort(Client.CompareByCity);
             Client.clients.ForEach(x => Console.WriteLine(x.ToString() + '\n'));
+            Console.ReadLine();
+        }
+
+        public static void ChauffeurAction(Chauffeur c)
+        {
+            Dictionary<string, Action> menuDict = new Dictionary<string, Action>();
+
+            foreach(Commande order in c.Orders)
+            {
+                if(order.OrderDate > DateTime.Now)
+                    menuDict.Add($"{order.OrderDate.ToShortDateString()}: {order.DeliveryStartingPoint} -> {order.DeliveryDestinationPoint}", () => PullRoadMap(order));
+            }
+
+            Utils.Menu(menuDict, "Séléctionnez une commande");
+        }
+
+        public static void PullRoadMap(Commande c)
+        {
+            Console.WriteLine(c);
+            Console.WriteLine("------- FEUILLE DE ROUTE -------");
+            Console.WriteLine(c.Roadmap);
             Console.ReadLine();
         }
 
